@@ -1053,6 +1053,15 @@
     (<span class="ident">x3</span>, <span class="ident">y3</span>, <span class="bool-val">false</span>)
 }
 <span class="comment">/* Wrapper functions with Point of Infinity */</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">g1double</span>(<span class="ident">p</span>: <span class="ident">G1</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">G1</span> {
+    <span class="kw">let</span> (<span class="ident">_x1</span>, <span class="ident">y1</span>, <span class="ident">inf1</span>) <span class="op">=</span> <span class="ident">p</span>;
+    <span class="kw">if</span> <span class="ident">y1</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">ZERO</span>() <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="op">!</span><span class="ident">inf1</span> {
+        <span class="ident">g1double_a</span>(<span class="ident">p</span>)
+    } <span class="kw">else</span> {
+        (<span class="ident">Fp</span>::<span class="ident">ZERO</span>(), <span class="ident">Fp</span>::<span class="ident">ZERO</span>(), <span class="bool-val">true</span>)
+    }
+}
+
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">g1add</span>(<span class="ident">p</span>: <span class="ident">G1</span>, <span class="ident">q</span>: <span class="ident">G1</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">G1</span> {
     <span class="kw">let</span> (<span class="ident">x1</span>, <span class="ident">y1</span>, <span class="ident">inf1</span>) <span class="op">=</span> <span class="ident">p</span>;
     <span class="kw">let</span> (<span class="ident">x2</span>, <span class="ident">y2</span>, <span class="ident">inf2</span>) <span class="op">=</span> <span class="ident">q</span>;
@@ -1062,21 +1071,12 @@
     } <span class="kw">else</span> { <span class="kw">if</span> <span class="ident">inf2</span> {
         <span class="ident">p</span>
     } <span class="kw">else</span> { <span class="kw">if</span> <span class="ident">p</span> <span class="op">=</span><span class="op">=</span> <span class="ident">q</span> {
-        <span class="ident">g1double_a</span>(<span class="ident">p</span>)
+        <span class="ident">g1double</span>(<span class="ident">p</span>)
     } <span class="kw">else</span> { <span class="kw">if</span> <span class="op">!</span>(<span class="ident">x1</span> <span class="op">=</span><span class="op">=</span> <span class="ident">x2</span> <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">y1</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">ZERO</span>() <span class="op">-</span> <span class="ident">y2</span>) {
         <span class="ident">g1add_a</span>(<span class="ident">p</span>, <span class="ident">q</span>)
     } <span class="kw">else</span> {
         (<span class="ident">Fp</span>::<span class="ident">ZERO</span>(), <span class="ident">Fp</span>::<span class="ident">ZERO</span>(), <span class="bool-val">true</span>)
     }}}}
-}
-
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">g1double</span>(<span class="ident">p</span>: <span class="ident">G1</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">G1</span> {
-    <span class="kw">let</span> (<span class="ident">_x1</span>, <span class="ident">y1</span>, <span class="ident">inf1</span>) <span class="op">=</span> <span class="ident">p</span>;
-    <span class="kw">if</span> <span class="ident">y1</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">ZERO</span>() <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="op">!</span><span class="ident">inf1</span> {
-        <span class="ident">g1double_a</span>(<span class="ident">p</span>)
-    } <span class="kw">else</span> {
-        (<span class="ident">Fp</span>::<span class="ident">ZERO</span>(), <span class="ident">Fp</span>::<span class="ident">ZERO</span>(), <span class="bool-val">true</span>)
-    }
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">g1mul</span>(<span class="ident">m</span>: <span class="ident">Scalar</span>, <span class="ident">p</span>: <span class="ident">G1</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">G1</span>
@@ -1137,6 +1137,15 @@
 }
 
 <span class="comment">/* Wrapper functions with Point at Infinity */</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">g2double</span>(<span class="ident">p</span>: <span class="ident">G2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">G2</span> {
+    <span class="kw">let</span> (<span class="ident">_x1</span>, <span class="ident">y1</span>, <span class="ident">inf1</span>) <span class="op">=</span> <span class="ident">p</span>;
+    <span class="kw">if</span> <span class="ident">y1</span> <span class="op">!</span><span class="op">=</span> <span class="ident">fp2zero</span>() <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="op">!</span><span class="ident">inf1</span> {
+        <span class="ident">g2double_a</span>(<span class="ident">p</span>)
+    } <span class="kw">else</span> {
+        (<span class="ident">fp2zero</span>(), <span class="ident">fp2zero</span>(), <span class="bool-val">true</span>)
+    }
+}
+
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">g2add</span>(<span class="ident">p</span>: <span class="ident">G2</span>, <span class="ident">q</span>: <span class="ident">G2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">G2</span> {
     <span class="kw">let</span> (<span class="ident">x1</span>, <span class="ident">y1</span>, <span class="ident">inf1</span>) <span class="op">=</span> <span class="ident">p</span>;
     <span class="kw">let</span> (<span class="ident">x2</span>, <span class="ident">y2</span>, <span class="ident">inf2</span>) <span class="op">=</span> <span class="ident">q</span>;
@@ -1146,21 +1155,12 @@
     } <span class="kw">else</span> { <span class="kw">if</span> <span class="ident">inf2</span> {
         <span class="ident">p</span>
     } <span class="kw">else</span> { <span class="kw">if</span> <span class="ident">p</span> <span class="op">=</span><span class="op">=</span> <span class="ident">q</span> {
-        <span class="ident">g2double_a</span>(<span class="ident">p</span>)
+        <span class="ident">g2double</span>(<span class="ident">p</span>)
     } <span class="kw">else</span> { <span class="kw">if</span> <span class="op">!</span>(<span class="ident">x1</span> <span class="op">=</span><span class="op">=</span> <span class="ident">x2</span> <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">y1</span> <span class="op">=</span><span class="op">=</span> <span class="ident">fp2neg</span>(<span class="ident">y2</span>)) {
         <span class="ident">g2add_a</span>(<span class="ident">p</span>, <span class="ident">q</span>)
     } <span class="kw">else</span> {
         (<span class="ident">fp2zero</span>(), <span class="ident">fp2zero</span>(), <span class="bool-val">true</span>)
     }}}}
-}
-
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">g2double</span>(<span class="ident">p</span>: <span class="ident">G2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">G2</span> {
-    <span class="kw">let</span> (<span class="ident">_x1</span>, <span class="ident">y1</span>, <span class="ident">inf1</span>) <span class="op">=</span> <span class="ident">p</span>;
-    <span class="kw">if</span> <span class="ident">y1</span> <span class="op">!</span><span class="op">=</span> <span class="ident">fp2zero</span>() <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="op">!</span><span class="ident">inf1</span> {
-        <span class="ident">g2double_a</span>(<span class="ident">p</span>)
-    } <span class="kw">else</span> {
-        (<span class="ident">fp2zero</span>(), <span class="ident">fp2zero</span>(), <span class="bool-val">true</span>)
-    }
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">g2mul</span>(<span class="ident">m</span>: <span class="ident">Scalar</span>, <span class="ident">p</span>: <span class="ident">G2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">G2</span>
