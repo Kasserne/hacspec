@@ -937,31 +937,31 @@
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Fp12</span> <span class="op">=</span> (<span class="ident">Fp6</span>, <span class="ident">Fp6</span>); <span class="comment">//w² = v</span>
 
 <span class="comment">/* Arithmetic for FP2 elements */</span>
-<span class="kw">fn</span> <span class="ident">fp2fromfp</span>(<span class="ident">n</span>: <span class="ident">Fp</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Fp2</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fp2fromfp</span>(<span class="ident">n</span>: <span class="ident">Fp</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Fp2</span> {
     (<span class="ident">n</span>, <span class="ident">Fp</span>::<span class="ident">ZERO</span>())
 }
 
-<span class="kw">fn</span> <span class="ident">fp2zero</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Fp2</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fp2zero</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Fp2</span> {
     <span class="ident">fp2fromfp</span>(<span class="ident">Fp</span>::<span class="ident">ZERO</span>())
 }
 
-<span class="kw">fn</span> <span class="ident">fp2neg</span>(<span class="ident">n</span>: <span class="ident">Fp2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Fp2</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fp2neg</span>(<span class="ident">n</span>: <span class="ident">Fp2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Fp2</span> {
     <span class="kw">let</span> (<span class="ident">n1</span>, <span class="ident">n2</span>) <span class="op">=</span> <span class="ident">n</span>;
     (<span class="ident">Fp</span>::<span class="ident">ZERO</span>() <span class="op">-</span> <span class="ident">n1</span>, <span class="ident">Fp</span>::<span class="ident">ZERO</span>() <span class="op">-</span> <span class="ident">n2</span>)
 }
 
-<span class="kw">fn</span> <span class="ident">fp2add</span>(<span class="ident">n</span>: <span class="ident">Fp2</span>, <span class="ident">m</span>: <span class="ident">Fp2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Fp2</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fp2add</span>(<span class="ident">n</span>: <span class="ident">Fp2</span>, <span class="ident">m</span>: <span class="ident">Fp2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Fp2</span> {
     <span class="comment">//Coordinate wise</span>
     <span class="kw">let</span> (<span class="ident">n1</span>, <span class="ident">n2</span>) <span class="op">=</span> <span class="ident">n</span>;
     <span class="kw">let</span> (<span class="ident">m1</span>, <span class="ident">m2</span>) <span class="op">=</span> <span class="ident">m</span>;
     (<span class="ident">n1</span> <span class="op">+</span> <span class="ident">m1</span>, <span class="ident">n2</span> <span class="op">+</span> <span class="ident">m2</span>)
 }
 
-<span class="kw">fn</span> <span class="ident">fp2sub</span>(<span class="ident">n</span>: <span class="ident">Fp2</span>, <span class="ident">m</span>: <span class="ident">Fp2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Fp2</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fp2sub</span>(<span class="ident">n</span>: <span class="ident">Fp2</span>, <span class="ident">m</span>: <span class="ident">Fp2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Fp2</span> {
     <span class="ident">fp2add</span>(<span class="ident">n</span>, <span class="ident">fp2neg</span>(<span class="ident">m</span>))
 }
 
-<span class="kw">fn</span> <span class="ident">fp2mul</span>(<span class="ident">n</span>: <span class="ident">Fp2</span>, <span class="ident">m</span>: <span class="ident">Fp2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Fp2</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fp2mul</span>(<span class="ident">n</span>: <span class="ident">Fp2</span>, <span class="ident">m</span>: <span class="ident">Fp2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Fp2</span> {
     <span class="comment">//(a+bu)*(c+du) = ac + adu + bcu + bdu^2 = ac - bd + (ad + bc)u</span>
     <span class="kw">let</span> (<span class="ident">n1</span>, <span class="ident">n2</span>) <span class="op">=</span> <span class="ident">n</span>;
     <span class="kw">let</span> (<span class="ident">m1</span>, <span class="ident">m2</span>) <span class="op">=</span> <span class="ident">m</span>;
@@ -970,7 +970,7 @@
     (<span class="ident">x1</span>, <span class="ident">x2</span>)
 }
 
-<span class="kw">fn</span> <span class="ident">fp2inv</span>(<span class="ident">n</span>: <span class="ident">Fp2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Fp2</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fp2inv</span>(<span class="ident">n</span>: <span class="ident">Fp2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Fp2</span> {
     <span class="kw">let</span> (<span class="ident">n1</span>, <span class="ident">n2</span>) <span class="op">=</span> <span class="ident">n</span>;
     <span class="kw">let</span> <span class="ident">t0</span> <span class="op">=</span> <span class="ident">n1</span> <span class="op">*</span> <span class="ident">n1</span> <span class="op">+</span> (<span class="ident">n2</span> <span class="op">*</span> <span class="ident">n2</span>);
     <span class="kw">let</span> <span class="ident">t1</span> <span class="op">=</span> <span class="ident">t0</span>.<span class="ident">inv</span>();
@@ -979,7 +979,7 @@
     (<span class="ident">x1</span>, <span class="ident">x2</span>)
 }
 
-<span class="kw">fn</span> <span class="ident">fp2conjugate</span>(<span class="ident">n</span>: <span class="ident">Fp2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Fp2</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fp2conjugate</span>(<span class="ident">n</span>: <span class="ident">Fp2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Fp2</span> {
     <span class="kw">let</span> (<span class="ident">n1</span>, <span class="ident">n2</span>) <span class="op">=</span> <span class="ident">n</span>;
     (<span class="ident">n1</span>, <span class="ident">Fp</span>::<span class="ident">ZERO</span>() <span class="op">-</span> <span class="ident">n2</span>)
 }

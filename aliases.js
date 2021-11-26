@@ -13,6 +13,7 @@ ALIASES["hacspec_aes"] = {};
 ALIASES["hacspec_aes128_gcm"] = {};
 ALIASES["hacspec_attributes"] = {};
 ALIASES["hacspec_bls12_381"] = {};
+ALIASES["hacspec_bls12_381_hash"] = {};
 ALIASES["hacspec_chacha20"] = {};
 ALIASES["hacspec_chacha20poly1305"] = {};
 ALIASES["hacspec_curve25519"] = {};

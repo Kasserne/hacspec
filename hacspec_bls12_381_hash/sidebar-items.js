@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["expand_message_xmd",""],["fp2_hash_to_field",""],["fp2_is_square",""],["fp2_sgn0",""],["fp2_sqrt",""],["fp_hash_to_field",""],["g1_hash_to_curve",""],["g2_curve_func",""]],"struct":[["ArrFp","Fixed length byte array."],["Dst","Fixed length byte array."],["FpHash",""],["FpHashCanvas",""]]});
