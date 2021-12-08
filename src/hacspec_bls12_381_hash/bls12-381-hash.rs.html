@@ -505,34 +505,90 @@
 <span id="505">505</span>
 <span id="506">506</span>
 <span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/* Hashing to Elliptic Curves: https://www.ietf.org/archive/id/draft-irtf-cfrg-hash-to-curve-13.html
-   For the BLS12-381 curve.  */</span>
+For the BLS12-381 curve.  */</span>
 
-<span class="kw">use</span> <span class="ident">hacspec_lib</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">hacspec_bls12_381</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">hacspec_lib</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">hacspec_sha256</span>::<span class="kw-2">*</span>;
 
-
-<span class="macro">public_nat_mod</span><span class="macro">!</span>( <span class="comment">//Need a bigger canvas to do a random 512 bit number modulo p</span>
+<span class="macro">public_nat_mod</span><span class="macro">!</span>( <span class="comment">//Need a bigger canvas than the 384 bits from the Fp natmod from bls12-381 to do a random 512 bit number modulo p</span>
     <span class="ident">type_name</span>: <span class="ident">FpHash</span>,
     <span class="ident">type_of_canvas</span>: <span class="ident">FpHashCanvas</span>,
-    <span class="ident">bit_size_of_field</span>: <span class="number">512</span>, 
-    <span class="ident">modulo_value</span>: <span class="string">&quot;1a0111ea397fe69a4b1ba7b6434bacd764774b84f38512bf6730d2a0f6b0f6241eabfffeb153ffffb9feffffffffaaab&quot;</span> 
+    <span class="ident">bit_size_of_field</span>: <span class="number">512</span>,
+    <span class="ident">modulo_value</span>: <span class="string">&quot;1a0111ea397fe69a4b1ba7b6434bacd764774b84f38512bf6730d2a0f6b0f6241eabfffeb153ffffb9feffffffffaaab&quot;</span>
 );
 
 <span class="macro">array</span><span class="macro">!</span>(<span class="ident">ArrFp</span>, <span class="number">6</span>, <span class="ident">U64</span>);
 
-<span class="kw">const</span> <span class="ident">B_IN_BYTES</span> : <span class="ident">usize</span> <span class="op">=</span> <span class="number">32</span>;
-<span class="kw">const</span> <span class="ident">S_IN_BYTES</span> : <span class="ident">usize</span> <span class="op">=</span> <span class="number">64</span>;
-<span class="kw">const</span> <span class="ident">L</span> : <span class="ident">usize</span> <span class="op">=</span> <span class="number">64</span>;
+<span class="kw">const</span> <span class="ident">B_IN_BYTES</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">32</span>;
+<span class="kw">const</span> <span class="ident">S_IN_BYTES</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">64</span>;
+<span class="kw">const</span> <span class="ident">L</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">64</span>;
 
 <span class="comment">//(p - 1) / 2 : 0d0088f51cbff34d 258dd3db21a5d66b b23ba5c279c2895f b39869507b587b12 0f55ffff58a9ffff dcff7fffffffd555</span>
 <span class="kw">const</span> <span class="ident">P_1_2</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
     <span class="ident">U64</span>,
     [
-        <span class="number">0x0d0088f51cbff34du64</span>, <span class="number">0x258dd3db21a5d66bu64</span>, <span class="number">0xb23ba5c279c2895fu64</span>,
-        <span class="number">0xb39869507b587b12u64</span>, <span class="number">0x0f55ffff58a9ffffu64</span>, <span class="number">0xdcff7fffffffd555u64</span>
+        <span class="number">0x0d0088f51cbff34du64</span>,
+        <span class="number">0x258dd3db21a5d66bu64</span>,
+        <span class="number">0xb23ba5c279c2895fu64</span>,
+        <span class="number">0xb39869507b587b12u64</span>,
+        <span class="number">0x0f55ffff58a9ffffu64</span>,
+        <span class="number">0xdcff7fffffffd555u64</span>
     ]
 ));
 
@@ -540,8 +596,12 @@
 <span class="kw">const</span> <span class="ident">P_1_4</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
     <span class="ident">U64</span>,
     [
-        <span class="number">0x0680447a8e5ff9a6u64</span>, <span class="number">0x92c6e9ed90d2eb35u64</span>, <span class="number">0xd91dd2e13ce144afu64</span>,
-        <span class="number">0xd9cc34a83dac3d89u64</span>, <span class="number">0x07aaffffac54ffffu64</span>, <span class="number">0xee7fbfffffffeaabu64</span>
+        <span class="number">0x0680447a8e5ff9a6u64</span>,
+        <span class="number">0x92c6e9ed90d2eb35u64</span>,
+        <span class="number">0xd91dd2e13ce144afu64</span>,
+        <span class="number">0xd9cc34a83dac3d89u64</span>,
+        <span class="number">0x07aaffffac54ffffu64</span>,
+        <span class="number">0xee7fbfffffffeaabu64</span>
     ]
 ));
 
@@ -549,21 +609,31 @@
 <span class="kw">const</span> <span class="ident">P_3_4</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
     <span class="ident">U64</span>,
     [
-        <span class="number">0x0680447a8e5ff9a6u64</span>, <span class="number">0x92c6e9ed90d2eb35u64</span>, <span class="number">0xd91dd2e13ce144afu64</span>,
-        <span class="number">0xd9cc34a83dac3d89u64</span>, <span class="number">0x07aaffffac54ffffu64</span>, <span class="number">0xee7fbfffffffeaaau64</span>
+        <span class="number">0x0680447a8e5ff9a6u64</span>,
+        <span class="number">0x92c6e9ed90d2eb35u64</span>,
+        <span class="number">0xd91dd2e13ce144afu64</span>,
+        <span class="number">0xd9cc34a83dac3d89u64</span>,
+        <span class="number">0x07aaffffac54ffffu64</span>,
+        <span class="number">0xee7fbfffffffeaaau64</span>
     ]
 ));
 
 <span class="comment">// https://www.ietf.org/archive/id/draft-irtf-cfrg-hash-to-curve-13.html#section-5.4.1</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">expand_message_xmd</span>(<span class="ident">msg</span>: <span class="kw-2">&amp;</span><span class="ident">ByteSeq</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="ident">ByteSeq</span>, <span class="ident">len_in_bytes</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ByteSeq</span> {
     <span class="kw">let</span> <span class="ident">ell</span> <span class="op">=</span> (<span class="ident">len_in_bytes</span> <span class="op">+</span> <span class="ident">B_IN_BYTES</span> <span class="op">-</span> <span class="number">1</span>) <span class="op">/</span> <span class="ident">B_IN_BYTES</span>; <span class="comment">// ceil(len_in_bytes / b_in_bytes)</span>
-    <span class="comment">// must be that ell &lt;= 255</span>
+                                                            <span class="comment">// must be that ell &lt;= 255</span>
     <span class="kw">let</span> <span class="ident">dst_prime</span> <span class="op">=</span> <span class="ident">dst</span>.<span class="ident">push</span>(<span class="kw-2">&amp;</span><span class="ident">U8_from_usize</span>(<span class="ident">dst</span>.<span class="ident">len</span>())); <span class="comment">// DST || I2OSP(len(DST), 1)</span>
     <span class="kw">let</span> <span class="ident">z_pad</span> <span class="op">=</span> <span class="ident">ByteSeq</span>::<span class="ident">new</span>(<span class="ident">S_IN_BYTES</span>); <span class="comment">// I2OSP(0, s_in_bytes)</span>
-    <span class="kw">let</span> <span class="ident">l_i_b_str</span> <span class="op">=</span> <span class="ident">ByteSeq</span>::<span class="ident">new</span>(<span class="number">0</span>).<span class="ident">push</span>(<span class="kw-2">&amp;</span><span class="ident">U8_from_usize</span>(<span class="ident">len_in_bytes</span><span class="op">/</span><span class="number">256</span>)).<span class="ident">push</span>(<span class="kw-2">&amp;</span><span class="ident">U8_from_usize</span>(<span class="ident">len_in_bytes</span>)); <span class="comment">// I2OSP(len_in_bytes, 2)</span>
-    <span class="kw">let</span> <span class="ident">msg_prime</span> <span class="op">=</span> <span class="ident">z_pad</span>.<span class="ident">concat</span>(<span class="ident">msg</span>).<span class="ident">concat</span>(<span class="kw-2">&amp;</span><span class="ident">l_i_b_str</span>).<span class="ident">concat</span>(<span class="kw-2">&amp;</span><span class="ident">ByteSeq</span>::<span class="ident">new</span>(<span class="number">1</span>)).<span class="ident">concat</span>(<span class="kw-2">&amp;</span><span class="ident">dst_prime</span>); <span class="comment">// Z_pad || msg || l_i_b_str || 0 || dst_prime</span>
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">l_i_b_str</span> <span class="op">=</span> <span class="ident">ByteSeq</span>::<span class="ident">new</span>(<span class="number">2</span>);
+    <span class="ident">l_i_b_str</span>[<span class="number">0</span>] <span class="op">=</span> <span class="ident">U8_from_usize</span>(<span class="ident">len_in_bytes</span> <span class="op">/</span> <span class="number">256</span>);
+    <span class="ident">l_i_b_str</span>[<span class="number">1</span>] <span class="op">=</span> <span class="ident">U8_from_usize</span>(<span class="ident">len_in_bytes</span>); <span class="comment">// I2OSP(len_in_bytes, 2)</span>
+    <span class="kw">let</span> <span class="ident">msg_prime</span> <span class="op">=</span> <span class="ident">z_pad</span>
+        .<span class="ident">concat</span>(<span class="ident">msg</span>)
+        .<span class="ident">concat</span>(<span class="kw-2">&amp;</span><span class="ident">l_i_b_str</span>)
+        .<span class="ident">concat</span>(<span class="kw-2">&amp;</span><span class="ident">ByteSeq</span>::<span class="ident">new</span>(<span class="number">1</span>))
+        .<span class="ident">concat</span>(<span class="kw-2">&amp;</span><span class="ident">dst_prime</span>); <span class="comment">// Z_pad || msg || l_i_b_str || 0 || dst_prime</span>
     <span class="kw">let</span> <span class="ident">b_0</span> <span class="op">=</span> <span class="ident">ByteSeq</span>::<span class="ident">from_seq</span>(<span class="kw-2">&amp;</span><span class="ident">hash</span>(<span class="kw-2">&amp;</span><span class="ident">msg_prime</span>)); <span class="comment">// H(msg_prime)</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">b_i</span> <span class="op">=</span>  <span class="ident">ByteSeq</span>::<span class="ident">from_seq</span>(<span class="kw-2">&amp;</span><span class="ident">hash</span>(<span class="kw-2">&amp;</span><span class="ident">b_0</span>.<span class="ident">push</span>(<span class="kw-2">&amp;</span><span class="ident">U8</span>(<span class="number">1u8</span>)).<span class="ident">concat</span>(<span class="kw-2">&amp;</span><span class="ident">dst_prime</span>))); <span class="comment">// H(b_0 || 1 || dst_prime)</span>
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">b_i</span> <span class="op">=</span> <span class="ident">ByteSeq</span>::<span class="ident">from_seq</span>(<span class="kw-2">&amp;</span><span class="ident">hash</span>(<span class="kw-2">&amp;</span><span class="ident">b_0</span>.<span class="ident">push</span>(<span class="kw-2">&amp;</span><span class="ident">U8</span>(<span class="number">1u8</span>)).<span class="ident">concat</span>(<span class="kw-2">&amp;</span><span class="ident">dst_prime</span>))); <span class="comment">// H(b_0 || 1 || dst_prime)</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">uniform_bytes</span> <span class="op">=</span> <span class="ident">ByteSeq</span>::<span class="ident">from_seq</span>(<span class="kw-2">&amp;</span><span class="ident">b_i</span>);
     <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">2</span>..(<span class="ident">ell</span> <span class="op">+</span> <span class="number">1</span>) {
         <span class="kw">let</span> <span class="ident">t</span> <span class="op">=</span> <span class="ident">ByteSeq</span>::<span class="ident">from_seq</span>(<span class="kw-2">&amp;</span><span class="ident">b_0</span>);
@@ -577,14 +647,15 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fp_hash_to_field</span>(<span class="ident">msg</span>: <span class="kw-2">&amp;</span><span class="ident">ByteSeq</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="ident">ByteSeq</span>, <span class="ident">count</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Seq</span><span class="op">&lt;</span><span class="ident">Fp</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">len_in_bytes</span> <span class="op">=</span> <span class="ident">count</span> <span class="op">*</span> <span class="ident">L</span>; <span class="comment">// count * m * L</span>
     <span class="kw">let</span> <span class="ident">uniform_bytes</span> <span class="op">=</span> <span class="ident">expand_message_xmd</span>(<span class="ident">msg</span>, <span class="ident">dst</span>, <span class="ident">len_in_bytes</span>);
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">Seq</span>::<span class="op">&lt;</span><span class="ident">Fp</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="number">0</span>);
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">Seq</span>::<span class="op">&lt;</span><span class="ident">Fp</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="ident">count</span>);
     <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">count</span> {
         <span class="comment">// m = 1, so no loop</span>
         <span class="kw">let</span> <span class="ident">elm_offset</span> <span class="op">=</span> <span class="ident">L</span> <span class="op">*</span> <span class="ident">i</span>; <span class="comment">// L * (j + i * m)</span>
         <span class="kw">let</span> <span class="ident">tv</span> <span class="op">=</span> <span class="ident">uniform_bytes</span>.<span class="ident">slice</span>(<span class="ident">elm_offset</span>, <span class="ident">L</span>); <span class="comment">//substr(uniform_bytes, elm_offset, L)</span>
-        <span class="kw">let</span> <span class="ident">u_i</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">FpHash</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">tv</span>).<span class="ident">to_byte_seq_be</span>().<span class="ident">slice</span>(<span class="number">16</span>, <span class="number">48</span>)); <span class="comment">// OS2IP(tv) mod p</span>
-        <span class="ident">output</span> <span class="op">=</span> <span class="ident">output</span>.<span class="ident">push</span>(<span class="kw-2">&amp;</span><span class="ident">u_i</span>);
-    } 
+        <span class="kw">let</span> <span class="ident">u_i</span> <span class="op">=</span>
+            <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">FpHash</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">tv</span>).<span class="ident">to_byte_seq_be</span>().<span class="ident">slice</span>(<span class="number">16</span>, <span class="number">48</span>)); <span class="comment">// OS2IP(tv) mod p</span>
+        <span class="ident">output</span>[<span class="ident">i</span>] <span class="op">=</span> <span class="ident">u_i</span>;
+    }
     <span class="ident">output</span>
 }
 
@@ -595,7 +666,7 @@
 
 <span class="kw">fn</span> <span class="ident">fp_is_square</span>(<span class="ident">x</span>: <span class="ident">Fp</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
     <span class="kw">let</span> <span class="ident">c1</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">P_1_2</span>.<span class="ident">to_be_bytes</span>()); <span class="comment">// (p - 1) / 2</span>
-    <span class="kw">let</span> <span class="ident">tv</span> <span class="op">=</span> <span class="ident">x</span>.<span class="ident">pow_self</span>(<span class="ident">c1</span>);       
+    <span class="kw">let</span> <span class="ident">tv</span> <span class="op">=</span> <span class="ident">x</span>.<span class="ident">pow_self</span>(<span class="ident">c1</span>);
     <span class="ident">tv</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">ZERO</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">tv</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">ONE</span>()
 }
 
@@ -605,13 +676,13 @@
 }
 
 <span class="comment">// y^2 = g(x) = x^3 + 4</span>
-<span class="kw">fn</span> <span class="ident">g1_curve_func</span>(<span class="ident">x</span>: <span class="ident">Fp</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Fp</span> { 
+<span class="kw">fn</span> <span class="ident">g1_curve_func</span>(<span class="ident">x</span>: <span class="ident">Fp</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Fp</span> {
     <span class="ident">x</span> <span class="op">*</span> <span class="ident">x</span> <span class="op">*</span> <span class="ident">x</span> <span class="op">+</span> <span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">4u128</span>)
 }
 
 <span class="comment">// https://www.ietf.org/archive/id/draft-irtf-cfrg-hash-to-curve-13.html#section-6.6.1</span>
 <span class="kw">fn</span> <span class="ident">g1_map_to_curve</span>(<span class="ident">u</span>: <span class="ident">Fp</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">G1</span> {
-    <span class="kw">let</span> <span class="ident">z</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">ZERO</span>() <span class="op">-</span> <span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">3u128</span>); 
+    <span class="kw">let</span> <span class="ident">z</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">ZERO</span>() <span class="op">-</span> <span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">3u128</span>);
     <span class="kw">let</span> <span class="ident">gz</span> <span class="op">=</span> <span class="ident">g1_curve_func</span>(<span class="ident">z</span>);
     <span class="kw">let</span> <span class="ident">tv1</span> <span class="op">=</span> <span class="ident">u</span> <span class="op">*</span> <span class="ident">u</span> <span class="op">*</span> <span class="ident">gz</span>;
     <span class="kw">let</span> <span class="ident">tv2</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">ONE</span>() <span class="op">+</span> <span class="ident">tv1</span>;
@@ -628,18 +699,19 @@
     <span class="kw">let</span> <span class="ident">x3</span> <span class="op">=</span> <span class="ident">z</span> <span class="op">+</span> <span class="ident">tv6</span> <span class="op">*</span> (<span class="ident">tv2</span> <span class="op">*</span> <span class="ident">tv2</span> <span class="op">*</span> <span class="ident">tv3</span>) <span class="op">*</span> (<span class="ident">tv2</span> <span class="op">*</span> <span class="ident">tv2</span> <span class="op">*</span> <span class="ident">tv3</span>);
     <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">fp_is_square</span>(<span class="ident">g1_curve_func</span>(<span class="ident">x1</span>)) {
         <span class="ident">x1</span>
-    } <span class="kw">else</span> { <span class="kw">if</span> <span class="ident">fp_is_square</span>(<span class="ident">g1_curve_func</span>(<span class="ident">x2</span>)) {
-        <span class="ident">x2</span>
     } <span class="kw">else</span> {
-        <span class="ident">x3</span>
-    }};
+        <span class="kw">if</span> <span class="ident">fp_is_square</span>(<span class="ident">g1_curve_func</span>(<span class="ident">x2</span>)) {
+            <span class="ident">x2</span>
+        } <span class="kw">else</span> {
+            <span class="ident">x3</span>
+        }
+    };
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">y</span> <span class="op">=</span> <span class="ident">fp_sqrt</span>(<span class="ident">g1_curve_func</span>(<span class="ident">x</span>));
     <span class="kw">if</span> <span class="ident">fp_sgn0</span>(<span class="ident">u</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">fp_sgn0</span>(<span class="ident">y</span>) {
         <span class="ident">y</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">ZERO</span>() <span class="op">-</span> <span class="ident">y</span>;
     }
     (<span class="ident">x</span>, <span class="ident">y</span>, <span class="bool-val">false</span>)
 }
-
 
 <span class="kw">fn</span> <span class="ident">g1_clear_cofactor</span>(<span class="ident">x</span>: <span class="ident">G1</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">G1</span> {
     <span class="kw">let</span> <span class="ident">h_eff</span> <span class="op">=</span> <span class="ident">Scalar</span>::<span class="ident">from_literal</span>(<span class="number">0xd201000000010001u128</span>);
@@ -650,7 +722,7 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">g1_hash_to_curve</span>(<span class="ident">msg</span>: <span class="kw-2">&amp;</span><span class="ident">ByteSeq</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="ident">ByteSeq</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">G1</span> {
     <span class="kw">let</span> <span class="ident">u</span> <span class="op">=</span> <span class="ident">fp_hash_to_field</span>(<span class="ident">msg</span>, <span class="ident">dst</span>, <span class="number">2</span>);
     <span class="kw">let</span> <span class="ident">q0</span> <span class="op">=</span> <span class="ident">g1_map_to_curve</span>(<span class="ident">u</span>[<span class="number">0</span>]);
-    <span class="kw">let</span> <span class="ident">q1</span> <span class="op">=</span> <span class="ident">g1_map_to_curve</span>(<span class="ident">u</span>[<span class="number">1</span>]); 
+    <span class="kw">let</span> <span class="ident">q1</span> <span class="op">=</span> <span class="ident">g1_map_to_curve</span>(<span class="ident">u</span>[<span class="number">1</span>]);
     <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">g1add</span>(<span class="ident">q0</span>, <span class="ident">q1</span>);
     <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">g1_clear_cofactor</span>(<span class="ident">r</span>);
     <span class="ident">p</span>
@@ -667,18 +739,20 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fp2_hash_to_field</span>(<span class="ident">msg</span>: <span class="kw-2">&amp;</span><span class="ident">ByteSeq</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="ident">ByteSeq</span>, <span class="ident">count</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Seq</span><span class="op">&lt;</span><span class="ident">Fp2</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">len_in_bytes</span> <span class="op">=</span> <span class="ident">count</span> <span class="op">*</span> <span class="number">2</span> <span class="op">*</span> <span class="ident">L</span>; <span class="comment">// count * m * L</span>
     <span class="kw">let</span> <span class="ident">uniform_bytes</span> <span class="op">=</span> <span class="ident">expand_message_xmd</span>(<span class="ident">msg</span>, <span class="ident">dst</span>, <span class="ident">len_in_bytes</span>);
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">Seq</span>::<span class="op">&lt;</span><span class="ident">Fp2</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="number">0</span>);
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">Seq</span>::<span class="op">&lt;</span><span class="ident">Fp2</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="ident">count</span>);
     <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">count</span> {
         <span class="comment">// m = 2</span>
         <span class="kw">let</span> <span class="ident">elm_offset</span> <span class="op">=</span> <span class="ident">L</span> <span class="op">*</span> <span class="ident">i</span> <span class="op">*</span> <span class="number">2</span>; <span class="comment">// L * (j + i * m)</span>
         <span class="kw">let</span> <span class="ident">tv</span> <span class="op">=</span> <span class="ident">uniform_bytes</span>.<span class="ident">slice</span>(<span class="ident">elm_offset</span>, <span class="ident">L</span>); <span class="comment">//substr(uniform_bytes, elm_offset, L)</span>
-        <span class="kw">let</span> <span class="ident">e_1</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">FpHash</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">tv</span>).<span class="ident">to_byte_seq_be</span>().<span class="ident">slice</span>(<span class="number">16</span>, <span class="number">48</span>)); <span class="comment">// OS2IP(tv) mod p</span>
+        <span class="kw">let</span> <span class="ident">e_1</span> <span class="op">=</span>
+            <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">FpHash</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">tv</span>).<span class="ident">to_byte_seq_be</span>().<span class="ident">slice</span>(<span class="number">16</span>, <span class="number">48</span>)); <span class="comment">// OS2IP(tv) mod p</span>
 
         <span class="kw">let</span> <span class="ident">elm_offset</span> <span class="op">=</span> <span class="ident">L</span> <span class="op">*</span> (<span class="number">1</span> <span class="op">+</span> <span class="ident">i</span> <span class="op">*</span> <span class="number">2</span>); <span class="comment">// L * (j + i * m)</span>
         <span class="kw">let</span> <span class="ident">tv</span> <span class="op">=</span> <span class="ident">uniform_bytes</span>.<span class="ident">slice</span>(<span class="ident">elm_offset</span>, <span class="ident">L</span>); <span class="comment">//substr(uniform_bytes, elm_offset, L)</span>
-        <span class="kw">let</span> <span class="ident">e_2</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">FpHash</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">tv</span>).<span class="ident">to_byte_seq_be</span>().<span class="ident">slice</span>(<span class="number">16</span>, <span class="number">48</span>)); <span class="comment">// OS2IP(tv) mod p</span>
-        <span class="ident">output</span> <span class="op">=</span> <span class="ident">output</span>.<span class="ident">push</span>(<span class="kw-2">&amp;</span>(<span class="ident">e_1</span>, <span class="ident">e_2</span>));
-    } 
+        <span class="kw">let</span> <span class="ident">e_2</span> <span class="op">=</span>
+            <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">FpHash</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">tv</span>).<span class="ident">to_byte_seq_be</span>().<span class="ident">slice</span>(<span class="number">16</span>, <span class="number">48</span>)); <span class="comment">// OS2IP(tv) mod p</span>
+        <span class="ident">output</span>[<span class="ident">i</span>] <span class="op">=</span> (<span class="ident">e_1</span>, <span class="ident">e_2</span>);
+    }
     <span class="ident">output</span>
 }
 
@@ -718,21 +792,23 @@
     <span class="kw">let</span> <span class="ident">c2</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">P_1_2</span>.<span class="ident">to_be_bytes</span>()); <span class="comment">// (p - 1) / 2</span>
     <span class="kw">let</span> <span class="ident">a1</span> <span class="op">=</span> <span class="ident">fp2exp</span>(<span class="ident">a</span>, <span class="ident">c1</span>); <span class="comment">// a ^ ((q-3)/4)</span>
     <span class="kw">let</span> <span class="ident">alpha</span> <span class="op">=</span> <span class="ident">fp2mul</span>(<span class="ident">a1</span>, <span class="ident">fp2mul</span>(<span class="ident">a1</span>, <span class="ident">a</span>)); <span class="comment">// a1(a1(a))</span>
-    <span class="comment">//let a0 = fp2mul(fp2conjugate(alpha), alpha); //alpha^q * alpha</span>
+                                           <span class="comment">//let a0 = fp2mul(fp2conjugate(alpha), alpha); //alpha^q * alpha</span>
     <span class="kw">let</span> <span class="ident">x0</span> <span class="op">=</span> <span class="ident">fp2mul</span>(<span class="ident">a1</span>, <span class="ident">a</span>); <span class="comment">//a1 * a</span>
     <span class="kw">let</span> <span class="ident">neg1</span> <span class="op">=</span> (<span class="ident">Fp</span>::<span class="ident">ZERO</span>() <span class="op">-</span> <span class="ident">Fp</span>::<span class="ident">ONE</span>(), <span class="ident">Fp</span>::<span class="ident">ZERO</span>());
     <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">fp2exp</span>(<span class="ident">fp2add</span>(<span class="ident">fp2fromfp</span>(<span class="ident">Fp</span>::<span class="ident">ONE</span>()), <span class="ident">alpha</span>), <span class="ident">c2</span>); <span class="comment">// (1 + alpha) ^ ((q-1)/2)</span>
     <span class="kw">if</span> <span class="ident">alpha</span> <span class="op">=</span><span class="op">=</span> <span class="ident">neg1</span> {
         <span class="ident">fp2mul</span>((<span class="ident">Fp</span>::<span class="ident">ZERO</span>(), <span class="ident">Fp</span>::<span class="ident">ONE</span>()), <span class="ident">x0</span>) <span class="comment">// i * x0</span>
     } <span class="kw">else</span> {
-        
         <span class="ident">fp2mul</span>(<span class="ident">b</span>, <span class="ident">x0</span>) <span class="comment">// b * x0</span>
     }
 }
 
 <span class="comment">// y^2 = g(x) = x^3 + 4(1 + I)</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">g2_curve_func</span>(<span class="ident">x</span>: <span class="ident">Fp2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Fp2</span> {
-    <span class="ident">fp2add</span>(<span class="ident">fp2mul</span>(<span class="ident">x</span>, <span class="ident">fp2mul</span>(<span class="ident">x</span>, <span class="ident">x</span>)), (<span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">4u128</span>), <span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">4u128</span>)))
+    <span class="ident">fp2add</span>(
+        <span class="ident">fp2mul</span>(<span class="ident">x</span>, <span class="ident">fp2mul</span>(<span class="ident">x</span>, <span class="ident">x</span>)),
+        (<span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">4u128</span>), <span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">4u128</span>)),
+    )
 }
 
 <span class="comment">// https://www.ietf.org/archive/id/draft-irtf-cfrg-hash-to-curve-13.html#section-6.6.1</span>
@@ -743,23 +819,31 @@
     <span class="kw">let</span> <span class="ident">tv2</span> <span class="op">=</span> <span class="ident">fp2add</span>(<span class="ident">fp2fromfp</span>(<span class="ident">Fp</span>::<span class="ident">ONE</span>()), <span class="ident">tv1</span>); <span class="comment">// 1 + tv1</span>
     <span class="kw">let</span> <span class="ident">tv1</span> <span class="op">=</span> <span class="ident">fp2sub</span>(<span class="ident">fp2fromfp</span>(<span class="ident">Fp</span>::<span class="ident">ONE</span>()), <span class="ident">tv1</span>); <span class="comment">// 1 - tv1</span>
     <span class="kw">let</span> <span class="ident">tv3</span> <span class="op">=</span> <span class="ident">fp2inv</span>(<span class="ident">fp2mul</span>(<span class="ident">tv1</span>, <span class="ident">tv2</span>)); <span class="comment">// inv0(tv1 * tv2)</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">tv4</span> <span class="op">=</span> <span class="ident">fp2_sqrt</span>(<span class="ident">fp2mul</span>(<span class="ident">fp2neg</span>(<span class="ident">gz</span>), <span class="ident">fp2mul</span>(<span class="ident">fp2fromfp</span>(<span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">3u128</span>)), <span class="ident">fp2mul</span>(<span class="ident">z</span>, <span class="ident">z</span>)))); <span class="comment">// sqrt(-g(Z) * (3 * Z^2)) #Could be pre-computed</span>
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">tv4</span> <span class="op">=</span> <span class="ident">fp2_sqrt</span>(<span class="ident">fp2mul</span>(
+        <span class="ident">fp2neg</span>(<span class="ident">gz</span>),
+        <span class="ident">fp2mul</span>(<span class="ident">fp2fromfp</span>(<span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">3u128</span>)), <span class="ident">fp2mul</span>(<span class="ident">z</span>, <span class="ident">z</span>)),
+    )); <span class="comment">// sqrt(-g(Z) * (3 * Z^2)) #Could be pre-computed</span>
     <span class="kw">if</span> <span class="ident">fp2_sgn0</span>(<span class="ident">tv4</span>) {
         <span class="ident">tv4</span> <span class="op">=</span> <span class="ident">fp2neg</span>(<span class="ident">tv4</span>);
     }
     <span class="kw">let</span> <span class="ident">tv5</span> <span class="op">=</span> <span class="ident">fp2mul</span>(<span class="ident">fp2mul</span>(<span class="ident">fp2mul</span>(<span class="ident">u</span>, <span class="ident">tv1</span>), <span class="ident">tv3</span>), <span class="ident">tv4</span>); <span class="comment">//u * tv1 * tv3 * tv4</span>
-    <span class="kw">let</span> <span class="ident">tv6</span> <span class="op">=</span> <span class="ident">fp2mul</span>(<span class="ident">fp2mul</span>(<span class="ident">fp2neg</span>(<span class="ident">fp2fromfp</span>(<span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">4u128</span>))), <span class="ident">gz</span>), <span class="ident">fp2inv</span>(<span class="ident">fp2mul</span>(<span class="ident">fp2fromfp</span>(<span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">3u128</span>)), <span class="ident">fp2mul</span>(<span class="ident">z</span>, <span class="ident">z</span>)))); <span class="comment">// -4 * g(Z) / (3 * Z^2) #Could be pre-computed</span>
+    <span class="kw">let</span> <span class="ident">tv6</span> <span class="op">=</span> <span class="ident">fp2mul</span>(
+        <span class="ident">fp2mul</span>(<span class="ident">fp2neg</span>(<span class="ident">fp2fromfp</span>(<span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">4u128</span>))), <span class="ident">gz</span>),
+        <span class="ident">fp2inv</span>(<span class="ident">fp2mul</span>(<span class="ident">fp2fromfp</span>(<span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">3u128</span>)), <span class="ident">fp2mul</span>(<span class="ident">z</span>, <span class="ident">z</span>))),
+    ); <span class="comment">// -4 * g(Z) / (3 * Z^2) #Could be pre-computed</span>
     <span class="kw">let</span> <span class="ident">x1</span> <span class="op">=</span> <span class="ident">fp2sub</span>(<span class="ident">fp2mul</span>(<span class="ident">fp2neg</span>(<span class="ident">z</span>), <span class="ident">fp2inv</span>(<span class="ident">fp2fromfp</span>(<span class="ident">Fp</span>::<span class="ident">TWO</span>()))), <span class="ident">tv5</span>); <span class="comment">// -Z / 2 - tv5</span>
     <span class="kw">let</span> <span class="ident">x2</span> <span class="op">=</span> <span class="ident">fp2add</span>(<span class="ident">fp2mul</span>(<span class="ident">fp2neg</span>(<span class="ident">z</span>), <span class="ident">fp2inv</span>(<span class="ident">fp2fromfp</span>(<span class="ident">Fp</span>::<span class="ident">TWO</span>()))), <span class="ident">tv5</span>); <span class="comment">// -Z / 2 - tv5</span>
-    <span class="kw">let</span> <span class="ident">tv7</span> <span class="op">=</span> <span class="ident">fp2mul</span>(<span class="ident">fp2mul</span>(<span class="ident">tv2</span>, <span class="ident">tv2</span>), <span class="ident">tv3</span>); 
+    <span class="kw">let</span> <span class="ident">tv7</span> <span class="op">=</span> <span class="ident">fp2mul</span>(<span class="ident">fp2mul</span>(<span class="ident">tv2</span>, <span class="ident">tv2</span>), <span class="ident">tv3</span>);
     <span class="kw">let</span> <span class="ident">x3</span> <span class="op">=</span> <span class="ident">fp2add</span>(<span class="ident">z</span>, <span class="ident">fp2mul</span>(<span class="ident">tv6</span>, <span class="ident">fp2mul</span>(<span class="ident">tv7</span>, <span class="ident">tv7</span>))); <span class="comment">// z + tv6 * (tv2^2 * tv3)^2</span>
     <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">fp2_is_square</span>(<span class="ident">g2_curve_func</span>(<span class="ident">x1</span>)) {
         <span class="ident">x1</span>
-    } <span class="kw">else</span> { <span class="kw">if</span> <span class="ident">fp2_is_square</span>(<span class="ident">g2_curve_func</span>(<span class="ident">x2</span>)) {
-        <span class="ident">x2</span>
     } <span class="kw">else</span> {
-        <span class="ident">x3</span>
-    }};
+        <span class="kw">if</span> <span class="ident">fp2_is_square</span>(<span class="ident">g2_curve_func</span>(<span class="ident">x2</span>)) {
+            <span class="ident">x2</span>
+        } <span class="kw">else</span> {
+            <span class="ident">x3</span>
+        }
+    };
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">y</span> <span class="op">=</span> <span class="ident">fp2_sqrt</span>(<span class="ident">g2_curve_func</span>(<span class="ident">x</span>)); <span class="comment">//sqrt(g(x))</span>
     <span class="kw">if</span> <span class="ident">fp2_sgn0</span>(<span class="ident">u</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">fp2_sgn0</span>(<span class="ident">y</span>) {
         <span class="ident">y</span> <span class="op">=</span> <span class="ident">fp2neg</span>(<span class="ident">y</span>);
@@ -768,9 +852,15 @@
 }
 
 <span class="comment">// https://www.ietf.org/archive/id/draft-irtf-cfrg-hash-to-curve-13.html#appendix-G.3</span>
-<span class="kw">fn</span> <span class="ident">psi</span>(<span class="ident">p</span> : <span class="ident">G2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">G2</span> {
-    <span class="kw">let</span> <span class="ident">c1</span> <span class="op">=</span> <span class="ident">fp2inv</span>(<span class="ident">fp2exp</span>((<span class="ident">Fp</span>::<span class="ident">ONE</span>(), <span class="ident">Fp</span>::<span class="ident">ONE</span>()), (<span class="ident">Fp</span>::<span class="ident">ZERO</span>() <span class="op">-</span> <span class="ident">Fp</span>::<span class="ident">ONE</span>()) <span class="op">*</span> (<span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">3u128</span>)).<span class="ident">inv</span>() )); <span class="comment">// 1 / (1 + I)^((p - 1) / 3) #Could be pre-computed</span>
-    <span class="kw">let</span> <span class="ident">c2</span> <span class="op">=</span> <span class="ident">fp2inv</span>(<span class="ident">fp2exp</span>((<span class="ident">Fp</span>::<span class="ident">ONE</span>(), <span class="ident">Fp</span>::<span class="ident">ONE</span>()), (<span class="ident">Fp</span>::<span class="ident">ZERO</span>() <span class="op">-</span> <span class="ident">Fp</span>::<span class="ident">ONE</span>()) <span class="op">*</span> (<span class="ident">Fp</span>::<span class="ident">TWO</span>()).<span class="ident">inv</span>() )); <span class="comment">// 1 / (1 + I)^((p - 1) / 2) #Could be pre-computed</span>
+<span class="kw">fn</span> <span class="ident">psi</span>(<span class="ident">p</span>: <span class="ident">G2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">G2</span> {
+    <span class="kw">let</span> <span class="ident">c1</span> <span class="op">=</span> <span class="ident">fp2inv</span>(<span class="ident">fp2exp</span>(
+        (<span class="ident">Fp</span>::<span class="ident">ONE</span>(), <span class="ident">Fp</span>::<span class="ident">ONE</span>()),
+        (<span class="ident">Fp</span>::<span class="ident">ZERO</span>() <span class="op">-</span> <span class="ident">Fp</span>::<span class="ident">ONE</span>()) <span class="op">*</span> (<span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">3u128</span>)).<span class="ident">inv</span>(),
+    )); <span class="comment">// 1 / (1 + I)^((p - 1) / 3) #Could be pre-computed</span>
+    <span class="kw">let</span> <span class="ident">c2</span> <span class="op">=</span> <span class="ident">fp2inv</span>(<span class="ident">fp2exp</span>(
+        (<span class="ident">Fp</span>::<span class="ident">ONE</span>(), <span class="ident">Fp</span>::<span class="ident">ONE</span>()),
+        (<span class="ident">Fp</span>::<span class="ident">ZERO</span>() <span class="op">-</span> <span class="ident">Fp</span>::<span class="ident">ONE</span>()) <span class="op">*</span> (<span class="ident">Fp</span>::<span class="ident">TWO</span>()).<span class="ident">inv</span>(),
+    )); <span class="comment">// 1 / (1 + I)^((p - 1) / 2) #Could be pre-computed</span>
     <span class="kw">let</span> (<span class="ident">x</span>, <span class="ident">y</span>, <span class="ident">inf</span>) <span class="op">=</span> <span class="ident">p</span>;
     <span class="kw">let</span> <span class="ident">qx</span> <span class="op">=</span> <span class="ident">fp2mul</span>(<span class="ident">c1</span>, <span class="ident">fp2conjugate</span>(<span class="ident">x</span>));
     <span class="kw">let</span> <span class="ident">qy</span> <span class="op">=</span> <span class="ident">fp2mul</span>(<span class="ident">c2</span>, <span class="ident">fp2conjugate</span>(<span class="ident">y</span>));
@@ -778,7 +868,7 @@
 }
 
 <span class="comment">// https://www.ietf.org/archive/id/draft-irtf-cfrg-hash-to-curve-13.html#appendix-G.3</span>
-<span class="kw">fn</span> <span class="ident">g2_clear_cofactor</span>(<span class="ident">p</span> : <span class="ident">G2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">G2</span> {
+<span class="kw">fn</span> <span class="ident">g2_clear_cofactor</span>(<span class="ident">p</span>: <span class="ident">G2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">G2</span> {
     <span class="kw">let</span> <span class="ident">c1</span> <span class="op">=</span> <span class="ident">Scalar</span>::<span class="ident">from_literal</span>(<span class="number">0xd201000000010000u128</span>);
     <span class="kw">let</span> <span class="ident">t1</span> <span class="op">=</span> <span class="ident">g2mul</span>(<span class="ident">c1</span>, <span class="ident">p</span>);
     <span class="kw">let</span> <span class="ident">t1</span> <span class="op">=</span> <span class="ident">g2neg</span>(<span class="ident">t1</span>); <span class="comment">//neg since c1 is actually negative</span>
@@ -799,7 +889,7 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">g2_hash_to_curve</span>(<span class="ident">msg</span>: <span class="kw-2">&amp;</span><span class="ident">ByteSeq</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="ident">ByteSeq</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">G2</span> {
     <span class="kw">let</span> <span class="ident">u</span> <span class="op">=</span> <span class="ident">fp2_hash_to_field</span>(<span class="ident">msg</span>, <span class="ident">dst</span>, <span class="number">2</span>);
     <span class="kw">let</span> <span class="ident">q0</span> <span class="op">=</span> <span class="ident">g2_map_to_curve</span>(<span class="ident">u</span>[<span class="number">0</span>]);
-    <span class="kw">let</span> <span class="ident">q1</span> <span class="op">=</span> <span class="ident">g2_map_to_curve</span>(<span class="ident">u</span>[<span class="number">1</span>]); 
+    <span class="kw">let</span> <span class="ident">q1</span> <span class="op">=</span> <span class="ident">g2_map_to_curve</span>(<span class="ident">u</span>[<span class="number">1</span>]);
     <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">g2add</span>(<span class="ident">q0</span>, <span class="ident">q1</span>);
     <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">g2_clear_cofactor</span>(<span class="ident">r</span>);
     <span class="ident">p</span>
@@ -825,7 +915,7 @@
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="comment">// Test vectors from https://www.ietf.org/archive/id/draft-irtf-cfrg-hash-to-curve-13.html#appendix-K.1</span>
     <span class="kw">fn</span> <span class="ident">test_expand_message</span>() {
-        <span class="kw">let</span> <span class="ident">dst</span> <span class="op">=</span> <span class="ident">ByteSeq</span>::<span class="ident">from_public_slice</span>(<span class="string">b&quot;QUUX-V01-CS02-with-expander-SHA256-128&quot;</span>); 
+        <span class="kw">let</span> <span class="ident">dst</span> <span class="op">=</span> <span class="ident">ByteSeq</span>::<span class="ident">from_public_slice</span>(<span class="string">b&quot;QUUX-V01-CS02-with-expander-SHA256-128&quot;</span>);
         <span class="kw">let</span> <span class="ident">len_in_bytes</span> <span class="op">=</span> <span class="number">0x20</span>;
         <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">ByteSeq</span>::<span class="ident">from_public_slice</span>(<span class="string">b&quot;&quot;</span>);
         <span class="kw">let</span> <span class="ident">expm</span> <span class="op">=</span> <span class="ident">expand_message_xmd</span>(<span class="kw-2">&amp;</span><span class="ident">msg</span>, <span class="kw-2">&amp;</span><span class="ident">dst</span>, <span class="ident">len_in_bytes</span>);
@@ -837,8 +927,10 @@
         <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="string">&quot;eff31487c770a893cfb36f912fbfcbff40d5661771ca4b2cb4eafe524333f5c1&quot;</span>;
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">expm</span>.<span class="ident">to_hex</span>(), <span class="ident">result</span>);
 
-        <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">ByteSeq</span>::<span class="ident">from_public_slice</span>(<span class="string">b&quot;q128_qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
-            qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq&quot;</span>);
+        <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">ByteSeq</span>::<span class="ident">from_public_slice</span>(
+            <span class="string">b&quot;q128_qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+            qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq&quot;</span>,
+        );
         <span class="kw">let</span> <span class="ident">expm</span> <span class="op">=</span> <span class="ident">expand_message_xmd</span>(<span class="kw-2">&amp;</span><span class="ident">msg</span>, <span class="kw-2">&amp;</span><span class="ident">dst</span>, <span class="ident">len_in_bytes</span>);
         <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="string">&quot;b23a1d2b4d97b2ef7785562a7e8bac7eed54ed6e97e29aa51bfe3f12ddad1ff9&quot;</span>;
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">expm</span>.<span class="ident">to_hex</span>(), <span class="ident">result</span>);
@@ -874,13 +966,14 @@
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">fps</span>[<span class="number">0usize</span>].<span class="ident">to_byte_seq_be</span>().<span class="ident">to_hex</span>(), <span class="string">&quot;062d1865eb80ebfa73dcfc45db1ad4266b9f3a93219976a3790ab8d52d3e5f1e62f3b01795e36834b17b70e7b76246d4&quot;</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">fps</span>[<span class="number">1usize</span>].<span class="ident">to_byte_seq_be</span>().<span class="ident">to_hex</span>(), <span class="string">&quot;0cdc3e2f271f29c4ff75020857ce6c5d36008c9b48385ea2f2bf6f96f428a3deb798aa033cd482d1cdc8b30178b08e3a&quot;</span>);
 
-        <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">ByteSeq</span>::<span class="ident">from_public_slice</span>(<span class="string">b&quot;q128_qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
-            qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq&quot;</span>);
+        <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">ByteSeq</span>::<span class="ident">from_public_slice</span>(
+            <span class="string">b&quot;q128_qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+            qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq&quot;</span>,
+        );
         <span class="kw">let</span> <span class="ident">fps</span> <span class="op">=</span> <span class="ident">fp_hash_to_field</span>(<span class="kw-2">&amp;</span><span class="ident">msg</span>, <span class="kw-2">&amp;</span><span class="ident">dst</span>, <span class="ident">count</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">fps</span>[<span class="number">0usize</span>].<span class="ident">to_byte_seq_be</span>().<span class="ident">to_hex</span>(), <span class="string">&quot;010476f6a060453c0b1ad0b628f3e57c23039ee16eea5e71bb87c3b5419b1255dc0e5883322e563b84a29543823c0e86&quot;</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">fps</span>[<span class="number">1usize</span>].<span class="ident">to_byte_seq_be</span>().<span class="ident">to_hex</span>(), <span class="string">&quot;0b1a912064fb0554b180e07af7e787f1f883a0470759c03c1b6509eb8ce980d1670305ae7b928226bb58fdc0a419f46e&quot;</span>);
     }
-
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_fp_sgn0</span>() {
@@ -912,7 +1005,7 @@
     <span class="kw">fn</span> <span class="ident">test_fp_sqrt</span>() {
         <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">256</span>);
         <span class="kw">let</span> <span class="ident">k</span> <span class="op">=</span> <span class="ident">fp_sqrt</span>(<span class="ident">x</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">k</span><span class="kw-2">*</span><span class="ident">k</span>, <span class="ident">x</span>);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">k</span> <span class="op">*</span> <span class="ident">k</span>, <span class="ident">x</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -928,8 +1021,7 @@
         <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> (<span class="ident">Fp</span>::<span class="ident">ZERO</span>() <span class="op">-</span> <span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">54</span>), <span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">34</span>));
         <span class="kw">let</span> <span class="ident">y</span> <span class="op">=</span> <span class="ident">fp2mul</span>(<span class="ident">x</span>, <span class="ident">x</span>);
         <span class="kw">let</span> <span class="ident">k</span> <span class="op">=</span> <span class="ident">fp2_sqrt</span>(<span class="ident">y</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">fp2mul</span>(<span class="ident">k</span>,<span class="ident">k</span>), <span class="ident">y</span>);
-
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">fp2mul</span>(<span class="ident">k</span>, <span class="ident">k</span>), <span class="ident">y</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -937,24 +1029,24 @@
         <span class="kw">let</span> <span class="ident">z</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">ZERO</span>() <span class="op">-</span> <span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">3</span>);
         <span class="kw">let</span> <span class="ident">gz</span> <span class="op">=</span> <span class="ident">g1_curve_func</span>(<span class="ident">z</span>);
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">gz</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">ZERO</span>());
-        <span class="kw">let</span> <span class="ident">t</span> <span class="op">=</span> (<span class="ident">Fp</span>::<span class="ident">ZERO</span>() <span class="op">-</span> (<span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">3</span>) <span class="op">*</span> <span class="ident">z</span><span class="kw-2">*</span><span class="ident">z</span>)) <span class="op">/</span> (<span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">4</span>) <span class="op">*</span> <span class="ident">gz</span>);
+        <span class="kw">let</span> <span class="ident">t</span> <span class="op">=</span> (<span class="ident">Fp</span>::<span class="ident">ZERO</span>() <span class="op">-</span> (<span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">3</span>) <span class="op">*</span> <span class="ident">z</span> <span class="op">*</span> <span class="ident">z</span>)) <span class="op">/</span> (<span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">4</span>) <span class="op">*</span> <span class="ident">gz</span>);
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">t</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">ZERO</span>());
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">fp_is_square</span>(<span class="ident">t</span>));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">fp_is_square</span>(<span class="ident">gz</span>) <span class="op">|</span><span class="op">|</span> <span class="ident">fp_is_square</span>(<span class="ident">g1_curve_func</span>((<span class="ident">Fp</span>::<span class="ident">ZERO</span>() <span class="op">-</span> <span class="ident">z</span>) <span class="op">/</span> <span class="ident">Fp</span>::<span class="ident">TWO</span>() )));
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">fp_is_square</span>(<span class="ident">gz</span>) <span class="op">|</span><span class="op">|</span> <span class="ident">fp_is_square</span>(<span class="ident">g1_curve_func</span>((<span class="ident">Fp</span>::<span class="ident">ZERO</span>() <span class="op">-</span> <span class="ident">z</span>) <span class="op">/</span> <span class="ident">Fp</span>::<span class="ident">TWO</span>())));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_g1_map_to_curve</span>() {
         <span class="kw">let</span> <span class="ident">u</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">3082</span>);
         <span class="kw">let</span> (<span class="ident">x</span>, <span class="ident">y</span>, <span class="kw">_</span>) <span class="op">=</span> <span class="ident">g1_map_to_curve</span>(<span class="ident">u</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">y</span><span class="kw-2">*</span><span class="ident">y</span>, <span class="ident">x</span><span class="kw-2">*</span><span class="ident">x</span><span class="kw-2">*</span><span class="ident">x</span> <span class="op">+</span> <span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">4</span>));
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">y</span> <span class="op">*</span> <span class="ident">y</span>, <span class="ident">x</span> <span class="op">*</span> <span class="ident">x</span> <span class="op">*</span> <span class="ident">x</span> <span class="op">+</span> <span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">4</span>));
     }
 
     <span class="attribute">#[<span class="ident">quickcheck</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_prop_g1_map_to_curve</span>(<span class="ident">a</span> : <span class="ident">u128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">test_prop_g1_map_to_curve</span>(<span class="ident">a</span>: <span class="ident">u128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">u</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="ident">a</span>);
         <span class="kw">let</span> (<span class="ident">x</span>, <span class="ident">y</span>, <span class="kw">_</span>) <span class="op">=</span> <span class="ident">g1_map_to_curve</span>(<span class="ident">u</span>);
-        <span class="ident">y</span><span class="kw-2">*</span><span class="ident">y</span> <span class="op">=</span><span class="op">=</span> <span class="ident">x</span><span class="kw-2">*</span><span class="ident">x</span><span class="kw-2">*</span><span class="ident">x</span> <span class="op">+</span> <span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">4</span>)
+        <span class="ident">y</span> <span class="op">*</span> <span class="ident">y</span> <span class="op">=</span><span class="op">=</span> <span class="ident">x</span> <span class="op">*</span> <span class="ident">x</span> <span class="op">*</span> <span class="ident">x</span> <span class="op">+</span> <span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">4</span>)
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -976,8 +1068,10 @@
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">fps</span>[<span class="number">1usize</span>].<span class="number">0</span>.<span class="ident">to_byte_seq_be</span>().<span class="ident">to_hex</span>(), <span class="string">&quot;1739123845406baa7be5c5dc74492051b6d42504de008c635f3535bb831d478a341420e67dcc7b46b2e8cba5379cca97&quot;</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">fps</span>[<span class="number">1usize</span>].<span class="number">1</span>.<span class="ident">to_byte_seq_be</span>().<span class="ident">to_hex</span>(), <span class="string">&quot;01897665d9cb5db16a27657760bbea7951f67ad68f8d55f7113f24ba6ddd82caef240a9bfa627972279974894701d975&quot;</span>);
 
-        <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">ByteSeq</span>::<span class="ident">from_public_slice</span>(<span class="string">b&quot;q128_qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
-            qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq&quot;</span>);
+        <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">ByteSeq</span>::<span class="ident">from_public_slice</span>(
+            <span class="string">b&quot;q128_qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+            qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq&quot;</span>,
+        );
         <span class="kw">let</span> <span class="ident">fps</span> <span class="op">=</span> <span class="ident">fp2_hash_to_field</span>(<span class="kw-2">&amp;</span><span class="ident">msg</span>, <span class="kw-2">&amp;</span><span class="ident">dst</span>, <span class="ident">count</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">fps</span>[<span class="number">0usize</span>].<span class="number">0</span>.<span class="ident">to_byte_seq_be</span>().<span class="ident">to_hex</span>(), <span class="string">&quot;025820cefc7d06fd38de7d8e370e0da8a52498be9b53cba9927b2ef5c6de1e12e12f188bbc7bc923864883c57e49e253&quot;</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">fps</span>[<span class="number">0usize</span>].<span class="number">1</span>.<span class="ident">to_byte_seq_be</span>().<span class="ident">to_hex</span>(), <span class="string">&quot;034147b77ce337a52e5948f66db0bab47a8d038e712123bb381899b6ab5ad20f02805601e6104c29df18c254b8618c7b&quot;</span>);
@@ -990,7 +1084,10 @@
         <span class="kw">let</span> <span class="ident">z</span> <span class="op">=</span> <span class="ident">fp2neg</span>(<span class="ident">fp2fromfp</span>(<span class="ident">Fp</span>::<span class="ident">ONE</span>()));
         <span class="kw">let</span> <span class="ident">gz</span> <span class="op">=</span> <span class="ident">g2_curve_func</span>(<span class="ident">z</span>);
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">gz</span> <span class="op">!</span><span class="op">=</span> <span class="ident">fp2zero</span>());
-        <span class="kw">let</span> <span class="ident">t</span> <span class="op">=</span> <span class="ident">fp2mul</span>(<span class="ident">fp2neg</span>(<span class="ident">fp2mul</span>(<span class="ident">fp2fromfp</span>(<span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">3</span>)), <span class="ident">fp2mul</span>(<span class="ident">z</span>, <span class="ident">z</span>))), <span class="ident">fp2inv</span>(<span class="ident">fp2mul</span>(<span class="ident">fp2fromfp</span>(<span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">4</span>)), <span class="ident">gz</span>)));
+        <span class="kw">let</span> <span class="ident">t</span> <span class="op">=</span> <span class="ident">fp2mul</span>(
+            <span class="ident">fp2neg</span>(<span class="ident">fp2mul</span>(<span class="ident">fp2fromfp</span>(<span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">3</span>)), <span class="ident">fp2mul</span>(<span class="ident">z</span>, <span class="ident">z</span>))),
+            <span class="ident">fp2inv</span>(<span class="ident">fp2mul</span>(<span class="ident">fp2fromfp</span>(<span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">4</span>)), <span class="ident">gz</span>)),
+        );
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">t</span> <span class="op">!</span><span class="op">=</span> <span class="ident">fp2zero</span>());
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">fp2_is_square</span>(<span class="ident">t</span>));
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">fp2_is_square</span>(<span class="ident">gz</span>));
@@ -1001,17 +1098,26 @@
         <span class="kw">let</span> <span class="ident">u1</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">3082</span>);
         <span class="kw">let</span> <span class="ident">u2</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">4021</span>);
         <span class="kw">let</span> (<span class="ident">x</span>, <span class="ident">y</span>, <span class="kw">_</span>) <span class="op">=</span> <span class="ident">g2_map_to_curve</span>((<span class="ident">u1</span>, <span class="ident">u2</span>));
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">fp2mul</span>(<span class="ident">y</span>,<span class="ident">y</span>), <span class="ident">fp2add</span>(<span class="ident">fp2mul</span>(<span class="ident">fp2mul</span>(<span class="ident">x</span>,<span class="ident">x</span>),<span class="ident">x</span>), (<span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">4</span>), <span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">4</span>))));
+        <span class="macro">assert_eq</span><span class="macro">!</span>(
+            <span class="ident">fp2mul</span>(<span class="ident">y</span>, <span class="ident">y</span>),
+            <span class="ident">fp2add</span>(
+                <span class="ident">fp2mul</span>(<span class="ident">fp2mul</span>(<span class="ident">x</span>, <span class="ident">x</span>), <span class="ident">x</span>),
+                (<span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">4</span>), <span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">4</span>))
+            )
+        );
     }
 
     <span class="attribute">#[<span class="ident">quickcheck</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_prop_g2_map_to_curve</span>(<span class="ident">a</span> : <span class="ident">u128</span>, <span class="ident">b</span> : <span class="ident">u128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">test_prop_g2_map_to_curve</span>(<span class="ident">a</span>: <span class="ident">u128</span>, <span class="ident">b</span>: <span class="ident">u128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">u1</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="ident">a</span>);
         <span class="kw">let</span> <span class="ident">u2</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="ident">b</span>);
         <span class="kw">let</span> (<span class="ident">x</span>, <span class="ident">y</span>, <span class="kw">_</span>) <span class="op">=</span> <span class="ident">g2_map_to_curve</span>((<span class="ident">u1</span>, <span class="ident">u2</span>));
-        <span class="ident">fp2mul</span>(<span class="ident">y</span>,<span class="ident">y</span>) <span class="op">=</span><span class="op">=</span> <span class="ident">fp2add</span>(<span class="ident">fp2mul</span>(<span class="ident">fp2mul</span>(<span class="ident">x</span>,<span class="ident">x</span>),<span class="ident">x</span>), (<span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">4</span>), <span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">4</span>)))
+        <span class="ident">fp2mul</span>(<span class="ident">y</span>, <span class="ident">y</span>)
+            <span class="op">=</span><span class="op">=</span> <span class="ident">fp2add</span>(
+                <span class="ident">fp2mul</span>(<span class="ident">fp2mul</span>(<span class="ident">x</span>, <span class="ident">x</span>), <span class="ident">x</span>),
+                (<span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">4</span>), <span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">4</span>)),
+            )
     }
-
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "hacspec_bls12_381_hash";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
