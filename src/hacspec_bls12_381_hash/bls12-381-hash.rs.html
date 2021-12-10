@@ -1496,9 +1496,68 @@
 <span id="1496">1496</span>
 <span id="1497">1497</span>
 <span id="1498">1498</span>
+<span id="1499">1499</span>
+<span id="1500">1500</span>
+<span id="1501">1501</span>
+<span id="1502">1502</span>
+<span id="1503">1503</span>
+<span id="1504">1504</span>
+<span id="1505">1505</span>
+<span id="1506">1506</span>
+<span id="1507">1507</span>
+<span id="1508">1508</span>
+<span id="1509">1509</span>
+<span id="1510">1510</span>
+<span id="1511">1511</span>
+<span id="1512">1512</span>
+<span id="1513">1513</span>
+<span id="1514">1514</span>
+<span id="1515">1515</span>
+<span id="1516">1516</span>
+<span id="1517">1517</span>
+<span id="1518">1518</span>
+<span id="1519">1519</span>
+<span id="1520">1520</span>
+<span id="1521">1521</span>
+<span id="1522">1522</span>
+<span id="1523">1523</span>
+<span id="1524">1524</span>
+<span id="1525">1525</span>
+<span id="1526">1526</span>
+<span id="1527">1527</span>
+<span id="1528">1528</span>
+<span id="1529">1529</span>
+<span id="1530">1530</span>
+<span id="1531">1531</span>
+<span id="1532">1532</span>
+<span id="1533">1533</span>
+<span id="1534">1534</span>
+<span id="1535">1535</span>
+<span id="1536">1536</span>
+<span id="1537">1537</span>
+<span id="1538">1538</span>
+<span id="1539">1539</span>
+<span id="1540">1540</span>
+<span id="1541">1541</span>
+<span id="1542">1542</span>
+<span id="1543">1543</span>
+<span id="1544">1544</span>
+<span id="1545">1545</span>
+<span id="1546">1546</span>
+<span id="1547">1547</span>
+<span id="1548">1548</span>
+<span id="1549">1549</span>
+<span id="1550">1550</span>
+<span id="1551">1551</span>
+<span id="1552">1552</span>
+<span id="1553">1553</span>
+<span id="1554">1554</span>
+<span id="1555">1555</span>
+<span id="1556">1556</span>
+<span id="1557">1557</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">/* Hashing to Elliptic Curves: https://www.ietf.org/archive/id/draft-irtf-cfrg-hash-to-curve-13.html
-For the BLS12-381 curve. 
+For the BLS12-381 curve.
 Includes both the Shallue-van de Woestijne method and the Simplified Shallue-van de Woestijne-Ulas for AB == 0 method
 for mapping to curve. */</span>
 
@@ -1519,7 +1578,7 @@ for mapping to curve. */</span>
 <span class="kw">const</span> <span class="ident">S_IN_BYTES</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">64</span>;
 <span class="kw">const</span> <span class="ident">L</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">64</span>;
 
-<span class="comment">//(p - 1) / 2 : 0d0088f51cbff34d 258dd3db21a5d66b b23ba5c279c2895f b39869507b587b12 0f55ffff58a9ffff dcff7fffffffd555</span>
+<span class="comment">// (p - 1) / 2</span>
 <span class="kw">const</span> <span class="ident">P_1_2</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
     <span class="ident">U64</span>,
     [
@@ -1532,7 +1591,7 @@ for mapping to curve. */</span>
     ]
 ));
 
-<span class="comment">//(p + 1) / 4 : 0680447a8e5ff9a6 92c6e9ed90d2eb35 d91dd2e13ce144af d9cc34a83dac3d89 07aaffffac54ffff ee7fbfffffffeaab</span>
+<span class="comment">// (p + 1) / 4</span>
 <span class="kw">const</span> <span class="ident">P_1_4</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
     <span class="ident">U64</span>,
     [
@@ -1545,7 +1604,7 @@ for mapping to curve. */</span>
     ]
 ));
 
-<span class="comment">//(p - 3) / 4 : 0680447a8e5ff9a6 92c6e9ed90d2eb35 d91dd2e13ce144af d9cc34a83dac3d89 07aaffffac54ffff ee7fbfffffffeaaa</span>
+<span class="comment">// (p - 3) / 4</span>
 <span class="kw">const</span> <span class="ident">P_3_4</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
     <span class="ident">U64</span>,
     [
@@ -1844,34 +1903,455 @@ for mapping to curve. */</span>
 
 <span class="comment">/* Simplified SWU for AB == 0 method
 *
-*
+* Hash to G1 - Constants
 */</span>
+
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_ISO_A</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x00144698a3b8e943u64</span>, <span class="number">0x3d693a02c96d4982u64</span>, <span class="number">0xb0ea985383ee66a8u64</span>,
+        <span class="number">0xd8e8981aefd881acu64</span>, <span class="number">0x98936f8da0e0f97fu64</span>, <span class="number">0x5cf428082d584c1du64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_ISO_B</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x12e2908d11688030u64</span>, <span class="number">0x018b12e8753eee3bu64</span>, <span class="number">0x2016c1f0f24f4070u64</span>,
+        <span class="number">0xa0b9c14fcef35ef5u64</span>, <span class="number">0x5a23215a316ceaa5u64</span>, <span class="number">0xd1cc48e98e172be0u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_XNUM_K_0</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x11a05f2b1e833340u64</span>, <span class="number">0xb809101dd9981585u64</span>, <span class="number">0x6b303e88a2d7005fu64</span>,
+        <span class="number">0xf2627b56cdb4e2c8u64</span>, <span class="number">0x5610c2d5f2e62d6eu64</span>, <span class="number">0xaeac1662734649b7u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_XNUM_K_1</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x17294ed3e943ab2fu64</span>, <span class="number">0x0588bab22147a81cu64</span>, <span class="number">0x7c17e75b2f6a8417u64</span>,
+        <span class="number">0xf565e33c70d1e86bu64</span>, <span class="number">0x4838f2a6f318c356u64</span>, <span class="number">0xe834eef1b3cb83bbu64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_XNUM_K_2</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x0d54005db97678ecu64</span>, <span class="number">0x1d1048c5d10a9a1bu64</span>, <span class="number">0xce032473295983e5u64</span>,
+        <span class="number">0x6878e501ec68e25cu64</span>, <span class="number">0x958c3e3d2a09729fu64</span>, <span class="number">0xe0179f9dac9edcb0u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_XNUM_K_3</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x1778e7166fcc6db7u64</span>, <span class="number">0x4e0609d307e55412u64</span>, <span class="number">0xd7f5e4656a8dbf25u64</span>,
+        <span class="number">0xf1b33289f1b33083u64</span>, <span class="number">0x5336e25ce3107193u64</span>, <span class="number">0xc5b388641d9b6861u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_XNUM_K_4</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x0e99726a3199f443u64</span>, <span class="number">0x6642b4b3e4118e54u64</span>, <span class="number">0x99db995a1257fb3fu64</span>,
+        <span class="number">0x086eeb65982fac18u64</span>, <span class="number">0x985a286f301e77c4u64</span>, <span class="number">0x51154ce9ac8895d9u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_XNUM_K_5</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x1630c3250d7313ffu64</span>, <span class="number">0x01d1201bf7a74ab5u64</span>, <span class="number">0xdb3cb17dd952799bu64</span>,
+        <span class="number">0x9ed3ab9097e68f90u64</span>, <span class="number">0xa0870d2dcae73d19u64</span>, <span class="number">0xcd13c1c66f652983u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_XNUM_K_6</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x0d6ed6553fe44d29u64</span>, <span class="number">0x6a3726c38ae652bfu64</span>, <span class="number">0xb11586264f0f8ce1u64</span>,
+        <span class="number">0x9008e218f9c86b2au64</span>, <span class="number">0x8da25128c1052ecau64</span>, <span class="number">0xddd7f225a139ed84u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_XNUM_K_7</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x17b81e7701abdbe2u64</span>, <span class="number">0xe8743884d1117e53u64</span>, <span class="number">0x356de5ab275b4db1u64</span>,
+        <span class="number">0xa682c62ef0f27533u64</span>, <span class="number">0x39b7c8f8c8f475afu64</span>, <span class="number">0x9ccb5618e3f0c88eu64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_XNUM_K_8</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x080d3cf1f9a78fc4u64</span>, <span class="number">0x7b90b33563be990du64</span>, <span class="number">0xc43b756ce79f5574u64</span>,
+        <span class="number">0xa2c596c928c5d1deu64</span>, <span class="number">0x4fa295f296b74e95u64</span>, <span class="number">0x6d71986a8497e317u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_XNUM_K_9</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x169b1f8e1bcfa7c4u64</span>, <span class="number">0x2e0c37515d138f22u64</span>, <span class="number">0xdd2ecb803a0c5c99u64</span>,
+        <span class="number">0x676314baf4bb1b7fu64</span>, <span class="number">0xa3190b2edc032779u64</span>, <span class="number">0x7f241067be390c9eu64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_XNUM_K_10</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x10321da079ce07e2u64</span>, <span class="number">0x72d8ec09d2565b0du64</span>, <span class="number">0xfa7dccdde6787f96u64</span>,
+        <span class="number">0xd50af36003b14866u64</span>, <span class="number">0xf69b771f8c285decu64</span>, <span class="number">0xca67df3f1605fb7bu64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_XNUM_K_11</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x06e08c248e260e70u64</span>, <span class="number">0xbd1e962381edee3du64</span>, <span class="number">0x31d79d7e22c837bcu64</span>,
+        <span class="number">0x23c0bf1bc24c6b68u64</span>, <span class="number">0xc24b1b80b64d391fu64</span>, <span class="number">0xa9c8ba2e8ba2d229u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_XDEN_K_0</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x08ca8d548cff19aeu64</span>, <span class="number">0x18b2e62f4bd3fa6fu64</span>, <span class="number">0x01d5ef4ba35b48bau64</span>,
+        <span class="number">0x9c9588617fc8ac62u64</span>, <span class="number">0xb558d681be343df8u64</span>, <span class="number">0x993cf9fa40d21b1cu64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_XDEN_K_1</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x12561a5deb559c43u64</span>, <span class="number">0x48b4711298e53636u64</span>, <span class="number">0x7041e8ca0cf0800cu64</span>,
+        <span class="number">0x0126c2588c48bf57u64</span>, <span class="number">0x13daa8846cb026e9u64</span>, <span class="number">0xe5c8276ec82b3bffu64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_XDEN_K_2</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x0b2962fe57a3225eu64</span>, <span class="number">0x8137e629bff2991fu64</span>, <span class="number">0x6f89416f5a718cd1u64</span>,
+        <span class="number">0xfca64e00b11aceacu64</span>, <span class="number">0xd6a3d0967c94fedcu64</span>, <span class="number">0xfcc239ba5cb83e19u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_XDEN_K_3</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x03425581a58ae2feu64</span>, <span class="number">0xc83aafef7c40eb54u64</span>, <span class="number">0x5b08243f16b16551u64</span>,
+        <span class="number">0x54cca8abc28d6fd0u64</span>, <span class="number">0x4976d5243eecf5c4u64</span>, <span class="number">0x130de8938dc62cd8u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_XDEN_K_4</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x13a8e162022914a8u64</span>, <span class="number">0x0a6f1d5f43e7a07du64</span>, <span class="number">0xffdfc759a12062bbu64</span>,
+        <span class="number">0x8d6b44e833b306dau64</span>, <span class="number">0x9bd29ba81f35781du64</span>, <span class="number">0x539d395b3532a21eu64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_XDEN_K_5</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x0e7355f8e4e667b9u64</span>, <span class="number">0x55390f7f0506c6e9u64</span>, <span class="number">0x395735e9ce9cad4du64</span>,
+        <span class="number">0x0a43bcef24b8982fu64</span>, <span class="number">0x7400d24bc4228f11u64</span>, <span class="number">0xc02df9a29f6304a5u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_XDEN_K_6</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x0772caacf1693619u64</span>, <span class="number">0x0f3e0c63e0596721u64</span>, <span class="number">0x570f5799af53a189u64</span>,
+        <span class="number">0x4e2e073062aede9cu64</span>, <span class="number">0xea73b3538f0de06cu64</span>, <span class="number">0xec2574496ee84a3au64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_XDEN_K_7</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x14a7ac2a9d64a8b2u64</span>, <span class="number">0x30b3f5b074cf0199u64</span>, <span class="number">0x6e7f63c21bca68a8u64</span>,
+        <span class="number">0x1996e1cdf9822c58u64</span>, <span class="number">0x0fa5b9489d11e2d3u64</span>, <span class="number">0x11f7d99bbdcc5a5eu64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_XDEN_K_8</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x0a10ecf6ada54f82u64</span>, <span class="number">0x5e920b3dafc7a3ccu64</span>, <span class="number">0xe07f8d1d7161366bu64</span>,
+        <span class="number">0x74100da67f398835u64</span>, <span class="number">0x03826692abba4370u64</span>, <span class="number">0x4776ec3a79a1d641u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_XDEN_K_9</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x095fc13ab9e92ad4u64</span>, <span class="number">0x476d6e3eb3a56680u64</span>, <span class="number">0xf682b4ee96f7d037u64</span>,
+        <span class="number">0x76df533978f31c15u64</span>, <span class="number">0x93174e4b4b786500u64</span>, <span class="number">0x2d6384d168ecdd0au64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YNUM_K_0</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x090d97c81ba24ee0u64</span>, <span class="number">0x259d1f094980dcfau64</span>, <span class="number">0x11ad138e48a86952u64</span>,
+        <span class="number">0x2b52af6c956543d3u64</span>, <span class="number">0xcd0c7aee9b3ba3c2u64</span>, <span class="number">0xbe9845719707bb33u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YNUM_K_1</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x134996a104ee5811u64</span>, <span class="number">0xd51036d776fb4683u64</span>, <span class="number">0x1223e96c254f383du64</span>,
+        <span class="number">0x0f906343eb67ad34u64</span>, <span class="number">0xd6c56711962fa8bfu64</span>, <span class="number">0xe097e75a2e41c696u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YNUM_K_2</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x00cc786baa966e66u64</span>, <span class="number">0xf4a384c86a3b4994u64</span>, <span class="number">0x2552e2d658a31ce2u64</span>,
+        <span class="number">0xc344be4b91400da7u64</span>, <span class="number">0xd26d521628b00523u64</span>, <span class="number">0xb8dfe240c72de1f6u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YNUM_K_3</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x01f86376e8981c21u64</span>, <span class="number">0x7898751ad8746757u64</span>, <span class="number">0xd42aa7b90eeb791cu64</span>,
+        <span class="number">0x09e4a3ec03251cf9u64</span>, <span class="number">0xde405aba9ec61decu64</span>, <span class="number">0xa6355c77b0e5f4cbu64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YNUM_K_4</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x08cc03fdefe0ff13u64</span>, <span class="number">0x5caf4fe2a21529c4u64</span>, <span class="number">0x195536fbe3ce50b8u64</span>,
+        <span class="number">0x79833fd221351adcu64</span>, <span class="number">0x2ee7f8dc099040a8u64</span>, <span class="number">0x41b6daecf2e8fedbu64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YNUM_K_5</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x16603fca40634b6au64</span>, <span class="number">0x2211e11db8f0a6a0u64</span>, <span class="number">0x74a7d0d4afadb7bdu64</span>,
+        <span class="number">0x76505c3d3ad5544eu64</span>, <span class="number">0x203f6326c95a8072u64</span>, <span class="number">0x99b23ab13633a5f0u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YNUM_K_6</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x04ab0b9bcfac1bbcu64</span>, <span class="number">0xb2c977d027796b3cu64</span>, <span class="number">0xe75bb8ca2be184cbu64</span>,
+        <span class="number">0x5231413c4d634f37u64</span>, <span class="number">0x47a87ac2460f415eu64</span>, <span class="number">0xc961f8855fe9d6f2u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YNUM_K_7</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x0987c8d5333ab86fu64</span>, <span class="number">0xde9926bd2ca6c674u64</span>, <span class="number">0x170a05bfe3bdd81fu64</span>,
+        <span class="number">0xfd038da6c26c8426u64</span>, <span class="number">0x42f64550fedfe935u64</span>, <span class="number">0xa15e4ca31870fb29u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YNUM_K_8</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x09fc4018bd96684bu64</span>, <span class="number">0xe88c9e221e4da1bbu64</span>, <span class="number">0x8f3abd16679dc26cu64</span>,
+        <span class="number">0x1e8b6e6a1f20cabeu64</span>, <span class="number">0x69d65201c78607a3u64</span>, <span class="number">0x60370e577bdba587u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YNUM_K_9</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x0e1bba7a1186bdb5u64</span>, <span class="number">0x223abde7ada14a23u64</span>, <span class="number">0xc42a0ca7915af6feu64</span>,
+        <span class="number">0x06985e7ed1e4d43bu64</span>, <span class="number">0x9b3f7055dd4eba6fu64</span>, <span class="number">0x2bafaaebca731c30u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YNUM_K_10</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x19713e47937cd1beu64</span>, <span class="number">0x0dfd0b8f1d43fb93u64</span>, <span class="number">0xcd2fcbcb6caf493fu64</span>,
+        <span class="number">0xd1183e416389e610u64</span>, <span class="number">0x31bf3a5cce3fbafcu64</span>, <span class="number">0xe813711ad011c132u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YNUM_K_11</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x18b46a908f36f6deu64</span>, <span class="number">0xb918c143fed2edccu64</span>, <span class="number">0x523559b8aaf0c246u64</span>,
+        <span class="number">0x2e6bfe7f911f6432u64</span>, <span class="number">0x49d9cdf41b44d606u64</span>, <span class="number">0xce07c8a4d0074d8eu64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YNUM_K_12</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x0b182cac101b9399u64</span>, <span class="number">0xd155096004f53f44u64</span>, <span class="number">0x7aa7b12a3426b08eu64</span>,
+        <span class="number">0xc02710e807b4633fu64</span>, <span class="number">0x06c851c1919211f2u64</span>, <span class="number">0x0d4c04f00b971ef8u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YNUM_K_13</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x0245a394ad1eca9bu64</span>, <span class="number">0x72fc00ae7be315dcu64</span>, <span class="number">0x757b3b080d4c1580u64</span>,
+        <span class="number">0x13e6632d3c40659cu64</span>, <span class="number">0xc6cf90ad1c232a64u64</span>, <span class="number">0x42d9d3f5db980133u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YNUM_K_14</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x05c129645e44cf11u64</span>, <span class="number">0x02a159f748c4a3fcu64</span>, <span class="number">0x5e673d81d7e86568u64</span>,
+        <span class="number">0xd9ab0f5d396a7ce4u64</span>, <span class="number">0x6ba1049b6579afb7u64</span>, <span class="number">0x866b1e715475224bu64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YNUM_K_15</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x15e6be4e990f03ceu64</span>, <span class="number">0x4ea50b3b42df2eb5u64</span>, <span class="number">0xcb181d8f84965a39u64</span>,
+        <span class="number">0x57add4fa95af01b2u64</span>, <span class="number">0xb665027efec01c77u64</span>, <span class="number">0x04b456be69c8b604u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YDEN_K_0</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x16112c4c3a9c98b2u64</span>, <span class="number">0x52181140fad0eae9u64</span>, <span class="number">0x601a6de578980be6u64</span>,
+        <span class="number">0xeec3232b5be72e7au64</span>, <span class="number">0x07f3688ef60c206du64</span>, <span class="number">0x01479253b03663c1u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YDEN_K_1</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x1962d75c2381201eu64</span>, <span class="number">0x1a0cbd6c43c348b8u64</span>, <span class="number">0x85c84ff731c4d59cu64</span>,
+        <span class="number">0xa4a10356f453e01fu64</span>, <span class="number">0x78a4260763529e35u64</span>, <span class="number">0x32f6102c2e49a03du64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YDEN_K_2</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x058df3306640da27u64</span>, <span class="number">0x6faaae7d6e8eb157u64</span>, <span class="number">0x78c4855551ae7f31u64</span>,
+        <span class="number">0x0c35a5dd279cd2ecu64</span>, <span class="number">0xa6757cd636f96f89u64</span>, <span class="number">0x1e2538b53dbf67f2u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YDEN_K_3</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x16b7d288798e5395u64</span>, <span class="number">0xf20d23bf89edb4d1u64</span>, <span class="number">0xd115c5dbddbcd30eu64</span>,
+        <span class="number">0x123da489e726af41u64</span>, <span class="number">0x727364f2c28297adu64</span>, <span class="number">0xa8d26d98445f5416u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YDEN_K_4</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x0be0e079545f43e4u64</span>, <span class="number">0xb00cc912f8228ddcu64</span>, <span class="number">0xc6d19c9f0f69bbb0u64</span>,
+        <span class="number">0x542eda0fc9dec916u64</span>, <span class="number">0xa20b15dc0fd2ededu64</span>, <span class="number">0xda39142311a5001du64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YDEN_K_5</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x08d9e5297186db2du64</span>, <span class="number">0x9fb266eaac783182u64</span>, <span class="number">0xb70152c65550d881u64</span>,
+        <span class="number">0xc5ecd87b6f0f5a64u64</span>, <span class="number">0x49f38db9dfa9cce2u64</span>, <span class="number">0x02c6477faaf9b7acu64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YDEN_K_6</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x166007c08a99db2fu64</span>, <span class="number">0xc3ba8734ace9824bu64</span>, <span class="number">0x5eecfdfa8d0cf8efu64</span>,
+        <span class="number">0x5dd365bc400a0051u64</span>, <span class="number">0xd5fa9c01a58b1fb9u64</span>, <span class="number">0x3d1a1399126a775cu64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YDEN_K_7</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x16a3ef08be3ea7eau64</span>, <span class="number">0x03bcddfabba6ff6eu64</span>, <span class="number">0xe5a4375efa1f4fd7u64</span>,
+        <span class="number">0xfeb34fd206357132u64</span>, <span class="number">0xb920f5b00801dee4u64</span>, <span class="number">0x60ee415a15812ed9u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YDEN_K_8</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x1866c8ed336c6123u64</span>, <span class="number">0x1a1be54fd1d74cc4u64</span>, <span class="number">0xf9fb0ce4c6af5920u64</span>,
+        <span class="number">0xabc5750c4bf39b48u64</span>, <span class="number">0x52cfe2f7bb924883u64</span>, <span class="number">0x6b233d9d55535d4au64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YDEN_K_9</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x167a55cda70a6e1cu64</span>, <span class="number">0xea820597d94a8490u64</span>, <span class="number">0x3216f763e13d87bbu64</span>,
+        <span class="number">0x5308592e7ea7d4fbu64</span>, <span class="number">0xc7385ea3d529b35eu64</span>, <span class="number">0x346ef48bb8913f55u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YDEN_K_10</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x04d2f259eea405bdu64</span>, <span class="number">0x48f010a01ad2911du64</span>, <span class="number">0x9c6dd039bb61a629u64</span>,
+        <span class="number">0x0e591b36e636a5c8u64</span>, <span class="number">0x71a5c29f4f830604u64</span>, <span class="number">0x00f8b49cba8f6aa8u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YDEN_K_11</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x0accbb67481d033fu64</span>, <span class="number">0xf5852c1e48c50c47u64</span>, <span class="number">0x7f94ff8aefce42d2u64</span>,
+        <span class="number">0x8c0f9a88cea79135u64</span>, <span class="number">0x16f968986f7ebbeau64</span>, <span class="number">0x9684b529e2561092u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YDEN_K_12</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x0ad6b9514c767fe3u64</span>, <span class="number">0xc3613144b45f1496u64</span>, <span class="number">0x543346d98adf0226u64</span>, 
+        <span class="number">0x7d5ceef9a00d9b86u64</span>, <span class="number">0x93000763e3b90ac1u64</span>, <span class="number">0x1e99b138573345ccu64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YDEN_K_13</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x02660400eb2e4f3bu64</span>, <span class="number">0x628bdd0d53cd76f2u64</span>, <span class="number">0xbf565b94e72927c1u64</span>,
+        <span class="number">0xcb748df27942480eu64</span>, <span class="number">0x420517bd8714cc80u64</span>, <span class="number">0xd1fadc1326ed06f7u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G1_YDEN_K_14</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x0e0fa1d816ddc03eu64</span>, <span class="number">0x6b24255e0d7819c1u64</span>, <span class="number">0x71c40f65e273b853u64</span>,
+        <span class="number">0x324efcd6356caa20u64</span>, <span class="number">0x5ca2f570f1349780u64</span>, <span class="number">0x4415473a1d634b8fu64</span>
+    ]
+));
 
 <span class="comment">// https://www.ietf.org/archive/id/draft-irtf-cfrg-hash-to-curve-13.html#section-6.6.2</span>
 <span class="kw">fn</span> <span class="ident">g1_simple_swu_iso</span>(<span class="ident">u</span>: <span class="ident">Fp</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">Fp</span>, <span class="ident">Fp</span>) {
     <span class="kw">let</span> <span class="ident">z</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">11u128</span>);
-    <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x00144698a3b8e943u64</span>,
-            <span class="number">0x3d693a02c96d4982u64</span>,
-            <span class="number">0xb0ea985383ee66a8u64</span>,
-            <span class="number">0xd8e8981aefd881acu64</span>,
-            <span class="number">0x98936f8da0e0f97fu64</span>,
-            <span class="number">0x5cf428082d584c1du64</span>
-        ]
-    ))));
-    <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x12e2908d11688030u64</span>,
-            <span class="number">0x018b12e8753eee3bu64</span>,
-            <span class="number">0x2016c1f0f24f4070u64</span>,
-            <span class="number">0xa0b9c14fcef35ef5u64</span>,
-            <span class="number">0x5a23215a316ceaa5u64</span>,
-            <span class="number">0xd1cc48e98e172be0u64</span>
-        ]
-    ))));
+    <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_ISO_A</span>.<span class="ident">to_be_bytes</span>());
+    <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_ISO_B</span>.<span class="ident">to_be_bytes</span>());
     <span class="kw">let</span> <span class="ident">tv1</span> <span class="op">=</span> (<span class="ident">z</span> <span class="op">*</span> <span class="ident">z</span> <span class="op">*</span> <span class="ident">u</span>.<span class="ident">exp</span>(<span class="number">4u32</span>) <span class="op">+</span> <span class="ident">z</span> <span class="op">*</span> <span class="ident">u</span> <span class="op">*</span> <span class="ident">u</span>).<span class="ident">inv</span>(); <span class="comment">// inv0(z^2 * u^4 + z * u^2)</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">x1</span> <span class="op">=</span> ((<span class="ident">Fp</span>::<span class="ident">ZERO</span>() <span class="op">-</span> <span class="ident">b</span>) <span class="op">*</span> <span class="ident">a</span>.<span class="ident">inv</span>()) <span class="op">*</span> (<span class="ident">Fp</span>::<span class="ident">ONE</span>() <span class="op">+</span> <span class="ident">tv1</span>); <span class="comment">// (-B / A) * (1 + tv1)</span>
     <span class="kw">if</span> <span class="ident">tv1</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">ZERO</span>() {
@@ -1891,446 +2371,76 @@ for mapping to curve. */</span>
     (<span class="ident">x</span>, <span class="ident">y</span>)
 }
 
-<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>::<span class="ident">macros</span>(<span class="ident">secret_array</span>)]</span>
 <span class="comment">// https://www.ietf.org/archive/id/draft-irtf-cfrg-hash-to-curve-13.html#appendix-E.2</span>
 <span class="kw">fn</span> <span class="ident">g1_isogeny_map</span>(<span class="ident">x</span>: <span class="ident">Fp</span>, <span class="ident">y</span>: <span class="ident">Fp</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">G1</span> {
     <span class="comment">// xnum_k</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">xnum_k</span> <span class="op">=</span> <span class="ident">Seq</span>::<span class="op">&lt;</span><span class="ident">Fp</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="number">12</span>);
-
-    <span class="ident">xnum_k</span>[<span class="number">0usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x11a05f2b1e833340u64</span>, <span class="number">0xb809101dd9981585u64</span>, <span class="number">0x6b303e88a2d7005fu64</span>,
-            <span class="number">0xf2627b56cdb4e2c8u64</span>, <span class="number">0x5610c2d5f2e62d6eu64</span>, <span class="number">0xaeac1662734649b7u64</span>
-        ]
-    ))));
-
-    <span class="ident">xnum_k</span>[<span class="number">1usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x17294ed3e943ab2fu64</span>, <span class="number">0x0588bab22147a81cu64</span>, <span class="number">0x7c17e75b2f6a8417u64</span>,
-            <span class="number">0xf565e33c70d1e86bu64</span>, <span class="number">0x4838f2a6f318c356u64</span>, <span class="number">0xe834eef1b3cb83bbu64</span>
-        ]
-    ))));
-
-    <span class="ident">xnum_k</span>[<span class="number">2usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x0d54005db97678ecu64</span>, <span class="number">0x1d1048c5d10a9a1bu64</span>, <span class="number">0xce032473295983e5u64</span>,
-            <span class="number">0x6878e501ec68e25cu64</span>, <span class="number">0x958c3e3d2a09729fu64</span>, <span class="number">0xe0179f9dac9edcb0u64</span>
-        ]
-    ))));
-
-    <span class="ident">xnum_k</span>[<span class="number">3usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x1778e7166fcc6db7u64</span>, <span class="number">0x4e0609d307e55412u64</span>, <span class="number">0xd7f5e4656a8dbf25u64</span>,
-            <span class="number">0xf1b33289f1b33083u64</span>, <span class="number">0x5336e25ce3107193u64</span>, <span class="number">0xc5b388641d9b6861u64</span>
-        ]
-    ))));
-
-    <span class="ident">xnum_k</span>[<span class="number">4usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x0e99726a3199f443u64</span>, <span class="number">0x6642b4b3e4118e54u64</span>, <span class="number">0x99db995a1257fb3fu64</span>,
-            <span class="number">0x086eeb65982fac18u64</span>, <span class="number">0x985a286f301e77c4u64</span>, <span class="number">0x51154ce9ac8895d9u64</span>
-        ]
-    ))));
-
-    <span class="ident">xnum_k</span>[<span class="number">5usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x1630c3250d7313ffu64</span>, <span class="number">0x01d1201bf7a74ab5u64</span>, <span class="number">0xdb3cb17dd952799bu64</span>,
-            <span class="number">0x9ed3ab9097e68f90u64</span>, <span class="number">0xa0870d2dcae73d19u64</span>, <span class="number">0xcd13c1c66f652983u64</span>
-        ]
-    ))));
-
-    <span class="ident">xnum_k</span>[<span class="number">6usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x0d6ed6553fe44d29u64</span>, <span class="number">0x6a3726c38ae652bfu64</span>, <span class="number">0xb11586264f0f8ce1u64</span>,
-            <span class="number">0x9008e218f9c86b2au64</span>, <span class="number">0x8da25128c1052ecau64</span>, <span class="number">0xddd7f225a139ed84u64</span>
-        ]
-    ))));
-
-    <span class="ident">xnum_k</span>[<span class="number">7usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x17b81e7701abdbe2u64</span>, <span class="number">0xe8743884d1117e53u64</span>, <span class="number">0x356de5ab275b4db1u64</span>,
-            <span class="number">0xa682c62ef0f27533u64</span>, <span class="number">0x39b7c8f8c8f475afu64</span>, <span class="number">0x9ccb5618e3f0c88eu64</span>
-        ]
-    ))));
-
-    <span class="ident">xnum_k</span>[<span class="number">8usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x080d3cf1f9a78fc4u64</span>, <span class="number">0x7b90b33563be990du64</span>, <span class="number">0xc43b756ce79f5574u64</span>,
-            <span class="number">0xa2c596c928c5d1deu64</span>, <span class="number">0x4fa295f296b74e95u64</span>, <span class="number">0x6d71986a8497e317u64</span>
-        ]
-    ))));
-
-    <span class="ident">xnum_k</span>[<span class="number">9usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x169b1f8e1bcfa7c4u64</span>, <span class="number">0x2e0c37515d138f22u64</span>, <span class="number">0xdd2ecb803a0c5c99u64</span>,
-            <span class="number">0x676314baf4bb1b7fu64</span>, <span class="number">0xa3190b2edc032779u64</span>, <span class="number">0x7f241067be390c9eu64</span>
-        ]
-    ))));
-
-    <span class="ident">xnum_k</span>[<span class="number">10usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x10321da079ce07e2u64</span>, <span class="number">0x72d8ec09d2565b0du64</span>, <span class="number">0xfa7dccdde6787f96u64</span>,
-            <span class="number">0xd50af36003b14866u64</span>, <span class="number">0xf69b771f8c285decu64</span>, <span class="number">0xca67df3f1605fb7bu64</span>
-        ]
-    ))));
-
-    <span class="ident">xnum_k</span>[<span class="number">11usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x06e08c248e260e70u64</span>, <span class="number">0xbd1e962381edee3du64</span>, <span class="number">0x31d79d7e22c837bcu64</span>,
-            <span class="number">0x23c0bf1bc24c6b68u64</span>, <span class="number">0xc24b1b80b64d391fu64</span>, <span class="number">0xa9c8ba2e8ba2d229u64</span>
-        ]
-    ))));
+    <span class="ident">xnum_k</span>[<span class="number">0usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_XNUM_K_0</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">xnum_k</span>[<span class="number">1usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_XNUM_K_1</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">xnum_k</span>[<span class="number">2usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_XNUM_K_2</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">xnum_k</span>[<span class="number">3usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_XNUM_K_3</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">xnum_k</span>[<span class="number">4usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_XNUM_K_4</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">xnum_k</span>[<span class="number">5usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_XNUM_K_5</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">xnum_k</span>[<span class="number">6usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_XNUM_K_6</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">xnum_k</span>[<span class="number">7usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_XNUM_K_7</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">xnum_k</span>[<span class="number">8usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_XNUM_K_8</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">xnum_k</span>[<span class="number">9usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_XNUM_K_9</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">xnum_k</span>[<span class="number">10usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_XNUM_K_10</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">xnum_k</span>[<span class="number">11usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_XNUM_K_11</span>.<span class="ident">to_be_bytes</span>());
 
     <span class="comment">// xden_k</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">xden_k</span> <span class="op">=</span> <span class="ident">Seq</span>::<span class="op">&lt;</span><span class="ident">Fp</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="number">10</span>);
-
-    <span class="ident">xden_k</span>[<span class="number">0usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x08ca8d548cff19aeu64</span>, <span class="number">0x18b2e62f4bd3fa6fu64</span>, <span class="number">0x01d5ef4ba35b48bau64</span>,
-            <span class="number">0x9c9588617fc8ac62u64</span>, <span class="number">0xb558d681be343df8u64</span>, <span class="number">0x993cf9fa40d21b1cu64</span>
-        ]
-    ))));
-
-    <span class="ident">xden_k</span>[<span class="number">1usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x12561a5deb559c43u64</span>, <span class="number">0x48b4711298e53636u64</span>, <span class="number">0x7041e8ca0cf0800cu64</span>,
-            <span class="number">0x0126c2588c48bf57u64</span>, <span class="number">0x13daa8846cb026e9u64</span>, <span class="number">0xe5c8276ec82b3bffu64</span>
-        ]
-    ))));
-
-    <span class="ident">xden_k</span>[<span class="number">2usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x0b2962fe57a3225eu64</span>, <span class="number">0x8137e629bff2991fu64</span>, <span class="number">0x6f89416f5a718cd1u64</span>,
-            <span class="number">0xfca64e00b11aceacu64</span>, <span class="number">0xd6a3d0967c94fedcu64</span>, <span class="number">0xfcc239ba5cb83e19u64</span>
-        ]
-    ))));
-
-    <span class="ident">xden_k</span>[<span class="number">3usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x03425581a58ae2feu64</span>, <span class="number">0xc83aafef7c40eb54u64</span>, <span class="number">0x5b08243f16b16551u64</span>,
-            <span class="number">0x54cca8abc28d6fd0u64</span>, <span class="number">0x4976d5243eecf5c4u64</span>, <span class="number">0x130de8938dc62cd8u64</span>
-        ]
-    ))));
-
-    <span class="ident">xden_k</span>[<span class="number">4usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x13a8e162022914a8u64</span>, <span class="number">0x0a6f1d5f43e7a07du64</span>, <span class="number">0xffdfc759a12062bbu64</span>,
-            <span class="number">0x8d6b44e833b306dau64</span>, <span class="number">0x9bd29ba81f35781du64</span>, <span class="number">0x539d395b3532a21eu64</span>
-        ]
-    ))));
-
-    <span class="ident">xden_k</span>[<span class="number">5usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x0e7355f8e4e667b9u64</span>, <span class="number">0x55390f7f0506c6e9u64</span>, <span class="number">0x395735e9ce9cad4du64</span>,
-            <span class="number">0x0a43bcef24b8982fu64</span>, <span class="number">0x7400d24bc4228f11u64</span>, <span class="number">0xc02df9a29f6304a5u64</span>
-        ]
-    ))));
-
-    <span class="ident">xden_k</span>[<span class="number">6usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x0772caacf1693619u64</span>, <span class="number">0x0f3e0c63e0596721u64</span>, <span class="number">0x570f5799af53a189u64</span>,
-            <span class="number">0x4e2e073062aede9cu64</span>, <span class="number">0xea73b3538f0de06cu64</span>, <span class="number">0xec2574496ee84a3au64</span>
-        ]
-    ))));
-
-    <span class="ident">xden_k</span>[<span class="number">7usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x14a7ac2a9d64a8b2u64</span>, <span class="number">0x30b3f5b074cf0199u64</span>, <span class="number">0x6e7f63c21bca68a8u64</span>,
-            <span class="number">0x1996e1cdf9822c58u64</span>, <span class="number">0x0fa5b9489d11e2d3u64</span>, <span class="number">0x11f7d99bbdcc5a5eu64</span>
-        ]
-    ))));
-
-    <span class="ident">xden_k</span>[<span class="number">8usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x0a10ecf6ada54f82u64</span>, <span class="number">0x5e920b3dafc7a3ccu64</span>, <span class="number">0xe07f8d1d7161366bu64</span>,
-            <span class="number">0x74100da67f398835u64</span>, <span class="number">0x03826692abba4370u64</span>, <span class="number">0x4776ec3a79a1d641u64</span>
-        ]
-    ))));
-
-    <span class="ident">xden_k</span>[<span class="number">9usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x095fc13ab9e92ad4u64</span>, <span class="number">0x476d6e3eb3a56680u64</span>, <span class="number">0xf682b4ee96f7d037u64</span>,
-            <span class="number">0x76df533978f31c15u64</span>, <span class="number">0x93174e4b4b786500u64</span>, <span class="number">0x2d6384d168ecdd0au64</span>
-        ]
-    ))));
+    <span class="ident">xden_k</span>[<span class="number">0usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_XDEN_K_0</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">xden_k</span>[<span class="number">1usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_XDEN_K_1</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">xden_k</span>[<span class="number">2usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_XDEN_K_2</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">xden_k</span>[<span class="number">3usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_XDEN_K_3</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">xden_k</span>[<span class="number">4usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_XDEN_K_4</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">xden_k</span>[<span class="number">5usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_XDEN_K_5</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">xden_k</span>[<span class="number">6usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_XDEN_K_6</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">xden_k</span>[<span class="number">7usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_XDEN_K_7</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">xden_k</span>[<span class="number">8usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_XDEN_K_8</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">xden_k</span>[<span class="number">9usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_XDEN_K_9</span>.<span class="ident">to_be_bytes</span>());
 
     <span class="comment">// ynum_k</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ynum_k</span> <span class="op">=</span> <span class="ident">Seq</span>::<span class="op">&lt;</span><span class="ident">Fp</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="number">16</span>);
-    <span class="ident">ynum_k</span>[<span class="number">0usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x090d97c81ba24ee0u64</span>, <span class="number">0x259d1f094980dcfau64</span>, <span class="number">0x11ad138e48a86952u64</span>,
-            <span class="number">0x2b52af6c956543d3u64</span>, <span class="number">0xcd0c7aee9b3ba3c2u64</span>, <span class="number">0xbe9845719707bb33u64</span>
-        ]
-    ))));
-
-    <span class="ident">ynum_k</span>[<span class="number">1usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x134996a104ee5811u64</span>, <span class="number">0xd51036d776fb4683u64</span>, <span class="number">0x1223e96c254f383du64</span>,
-            <span class="number">0x0f906343eb67ad34u64</span>, <span class="number">0xd6c56711962fa8bfu64</span>, <span class="number">0xe097e75a2e41c696u64</span>
-        ]
-    ))));
-
-    <span class="ident">ynum_k</span>[<span class="number">2usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x00cc786baa966e66u64</span>, <span class="number">0xf4a384c86a3b4994u64</span>, <span class="number">0x2552e2d658a31ce2u64</span>,
-            <span class="number">0xc344be4b91400da7u64</span>, <span class="number">0xd26d521628b00523u64</span>, <span class="number">0xb8dfe240c72de1f6u64</span>
-        ]
-    ))));
-
-    <span class="ident">ynum_k</span>[<span class="number">3usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x01f86376e8981c21u64</span>, <span class="number">0x7898751ad8746757u64</span>, <span class="number">0xd42aa7b90eeb791cu64</span>,
-            <span class="number">0x09e4a3ec03251cf9u64</span>, <span class="number">0xde405aba9ec61decu64</span>, <span class="number">0xa6355c77b0e5f4cbu64</span>
-        ]
-    ))));
-
-    <span class="ident">ynum_k</span>[<span class="number">4usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x08cc03fdefe0ff13u64</span>, <span class="number">0x5caf4fe2a21529c4u64</span>, <span class="number">0x195536fbe3ce50b8u64</span>,
-            <span class="number">0x79833fd221351adcu64</span>, <span class="number">0x2ee7f8dc099040a8u64</span>, <span class="number">0x41b6daecf2e8fedbu64</span>
-        ]
-    ))));
-
-    <span class="ident">ynum_k</span>[<span class="number">5usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x16603fca40634b6au64</span>, <span class="number">0x2211e11db8f0a6a0u64</span>, <span class="number">0x74a7d0d4afadb7bdu64</span>,
-            <span class="number">0x76505c3d3ad5544eu64</span>, <span class="number">0x203f6326c95a8072u64</span>, <span class="number">0x99b23ab13633a5f0u64</span>
-        ]
-    ))));
-
-    <span class="ident">ynum_k</span>[<span class="number">6usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x04ab0b9bcfac1bbcu64</span>, <span class="number">0xb2c977d027796b3cu64</span>, <span class="number">0xe75bb8ca2be184cbu64</span>,
-            <span class="number">0x5231413c4d634f37u64</span>, <span class="number">0x47a87ac2460f415eu64</span>, <span class="number">0xc961f8855fe9d6f2u64</span>
-        ]
-    ))));
-
-    <span class="ident">ynum_k</span>[<span class="number">7usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x0987c8d5333ab86fu64</span>, <span class="number">0xde9926bd2ca6c674u64</span>, <span class="number">0x170a05bfe3bdd81fu64</span>,
-            <span class="number">0xfd038da6c26c8426u64</span>, <span class="number">0x42f64550fedfe935u64</span>, <span class="number">0xa15e4ca31870fb29u64</span>
-        ]
-    ))));
-
-    <span class="ident">ynum_k</span>[<span class="number">8usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x09fc4018bd96684bu64</span>, <span class="number">0xe88c9e221e4da1bbu64</span>, <span class="number">0x8f3abd16679dc26cu64</span>,
-            <span class="number">0x1e8b6e6a1f20cabeu64</span>, <span class="number">0x69d65201c78607a3u64</span>, <span class="number">0x60370e577bdba587u64</span>
-        ]
-    ))));
-
-    <span class="ident">ynum_k</span>[<span class="number">9usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x0e1bba7a1186bdb5u64</span>, <span class="number">0x223abde7ada14a23u64</span>, <span class="number">0xc42a0ca7915af6feu64</span>,
-            <span class="number">0x06985e7ed1e4d43bu64</span>, <span class="number">0x9b3f7055dd4eba6fu64</span>, <span class="number">0x2bafaaebca731c30u64</span>
-        ]
-    ))));
-
-    <span class="ident">ynum_k</span>[<span class="number">10usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x19713e47937cd1beu64</span>, <span class="number">0x0dfd0b8f1d43fb93u64</span>, <span class="number">0xcd2fcbcb6caf493fu64</span>,
-            <span class="number">0xd1183e416389e610u64</span>, <span class="number">0x31bf3a5cce3fbafcu64</span>, <span class="number">0xe813711ad011c132u64</span>
-        ]
-    ))));
-
-    <span class="ident">ynum_k</span>[<span class="number">11usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x18b46a908f36f6deu64</span>, <span class="number">0xb918c143fed2edccu64</span>, <span class="number">0x523559b8aaf0c246u64</span>,
-            <span class="number">0x2e6bfe7f911f6432u64</span>, <span class="number">0x49d9cdf41b44d606u64</span>, <span class="number">0xce07c8a4d0074d8eu64</span>
-        ]
-    ))));
-
-    <span class="ident">ynum_k</span>[<span class="number">12usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x0b182cac101b9399u64</span>, <span class="number">0xd155096004f53f44u64</span>, <span class="number">0x7aa7b12a3426b08eu64</span>,
-            <span class="number">0xc02710e807b4633fu64</span>, <span class="number">0x06c851c1919211f2u64</span>, <span class="number">0x0d4c04f00b971ef8u64</span>
-        ]
-    ))));
-
-    <span class="ident">ynum_k</span>[<span class="number">13usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x0245a394ad1eca9bu64</span>, <span class="number">0x72fc00ae7be315dcu64</span>, <span class="number">0x757b3b080d4c1580u64</span>,
-            <span class="number">0x13e6632d3c40659cu64</span>, <span class="number">0xc6cf90ad1c232a64u64</span>, <span class="number">0x42d9d3f5db980133u64</span>
-        ]
-    ))));
-
-    <span class="ident">ynum_k</span>[<span class="number">14usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x05c129645e44cf11u64</span>, <span class="number">0x02a159f748c4a3fcu64</span>, <span class="number">0x5e673d81d7e86568u64</span>,
-            <span class="number">0xd9ab0f5d396a7ce4u64</span>, <span class="number">0x6ba1049b6579afb7u64</span>, <span class="number">0x866b1e715475224bu64</span>
-        ]
-    ))));
-
-    <span class="ident">ynum_k</span>[<span class="number">15usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x15e6be4e990f03ceu64</span>, <span class="number">0x4ea50b3b42df2eb5u64</span>, <span class="number">0xcb181d8f84965a39u64</span>,
-            <span class="number">0x57add4fa95af01b2u64</span>, <span class="number">0xb665027efec01c77u64</span>, <span class="number">0x04b456be69c8b604u64</span>
-        ]
-    ))));
+    <span class="ident">ynum_k</span>[<span class="number">0usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YNUM_K_0</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">ynum_k</span>[<span class="number">1usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YNUM_K_1</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">ynum_k</span>[<span class="number">2usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YNUM_K_2</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">ynum_k</span>[<span class="number">3usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YNUM_K_3</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">ynum_k</span>[<span class="number">4usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YNUM_K_4</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">ynum_k</span>[<span class="number">5usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YNUM_K_5</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">ynum_k</span>[<span class="number">6usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YNUM_K_6</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">ynum_k</span>[<span class="number">7usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YNUM_K_7</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">ynum_k</span>[<span class="number">8usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YNUM_K_8</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">ynum_k</span>[<span class="number">9usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YNUM_K_9</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">ynum_k</span>[<span class="number">10usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YNUM_K_10</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">ynum_k</span>[<span class="number">11usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YNUM_K_11</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">ynum_k</span>[<span class="number">12usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YNUM_K_12</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">ynum_k</span>[<span class="number">13usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YNUM_K_13</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">ynum_k</span>[<span class="number">14usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YNUM_K_14</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">ynum_k</span>[<span class="number">15usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YNUM_K_15</span>.<span class="ident">to_be_bytes</span>());
 
     <span class="comment">// yden_k</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">yden_k</span> <span class="op">=</span> <span class="ident">Seq</span>::<span class="op">&lt;</span><span class="ident">Fp</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="number">15</span>);
-    <span class="ident">yden_k</span>[<span class="number">0usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x16112c4c3a9c98b2u64</span>, <span class="number">0x52181140fad0eae9u64</span>, <span class="number">0x601a6de578980be6u64</span>,
-            <span class="number">0xeec3232b5be72e7au64</span>, <span class="number">0x07f3688ef60c206du64</span>, <span class="number">0x01479253b03663c1u64</span>
-        ]
-    ))));
-
-    <span class="ident">yden_k</span>[<span class="number">1usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x1962d75c2381201eu64</span>, <span class="number">0x1a0cbd6c43c348b8u64</span>, <span class="number">0x85c84ff731c4d59cu64</span>,
-            <span class="number">0xa4a10356f453e01fu64</span>, <span class="number">0x78a4260763529e35u64</span>, <span class="number">0x32f6102c2e49a03du64</span>
-        ]
-    ))));
-
-    <span class="ident">yden_k</span>[<span class="number">2usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x058df3306640da27u64</span>, <span class="number">0x6faaae7d6e8eb157u64</span>, <span class="number">0x78c4855551ae7f31u64</span>,
-            <span class="number">0x0c35a5dd279cd2ecu64</span>, <span class="number">0xa6757cd636f96f89u64</span>, <span class="number">0x1e2538b53dbf67f2u64</span>
-        ]
-    ))));
-
-    <span class="ident">yden_k</span>[<span class="number">3usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x16b7d288798e5395u64</span>, <span class="number">0xf20d23bf89edb4d1u64</span>, <span class="number">0xd115c5dbddbcd30eu64</span>,
-            <span class="number">0x123da489e726af41u64</span>, <span class="number">0x727364f2c28297adu64</span>, <span class="number">0xa8d26d98445f5416u64</span>
-        ]
-    ))));
-
-    <span class="ident">yden_k</span>[<span class="number">4usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x0be0e079545f43e4u64</span>, <span class="number">0xb00cc912f8228ddcu64</span>, <span class="number">0xc6d19c9f0f69bbb0u64</span>,
-            <span class="number">0x542eda0fc9dec916u64</span>, <span class="number">0xa20b15dc0fd2ededu64</span>, <span class="number">0xda39142311a5001du64</span>
-        ]
-    ))));
-
-    <span class="ident">yden_k</span>[<span class="number">5usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x08d9e5297186db2du64</span>, <span class="number">0x9fb266eaac783182u64</span>, <span class="number">0xb70152c65550d881u64</span>,
-            <span class="number">0xc5ecd87b6f0f5a64u64</span>, <span class="number">0x49f38db9dfa9cce2u64</span>, <span class="number">0x02c6477faaf9b7acu64</span>
-        ]
-    ))));
-
-    <span class="ident">yden_k</span>[<span class="number">6usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x166007c08a99db2fu64</span>, <span class="number">0xc3ba8734ace9824bu64</span>, <span class="number">0x5eecfdfa8d0cf8efu64</span>,
-            <span class="number">0x5dd365bc400a0051u64</span>, <span class="number">0xd5fa9c01a58b1fb9u64</span>, <span class="number">0x3d1a1399126a775cu64</span>
-        ]
-    ))));
-
-    <span class="ident">yden_k</span>[<span class="number">7usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x16a3ef08be3ea7eau64</span>, <span class="number">0x03bcddfabba6ff6eu64</span>, <span class="number">0xe5a4375efa1f4fd7u64</span>,
-            <span class="number">0xfeb34fd206357132u64</span>, <span class="number">0xb920f5b00801dee4u64</span>, <span class="number">0x60ee415a15812ed9u64</span>
-        ]
-    ))));
-
-    <span class="ident">yden_k</span>[<span class="number">8usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x1866c8ed336c6123u64</span>, <span class="number">0x1a1be54fd1d74cc4u64</span>, <span class="number">0xf9fb0ce4c6af5920u64</span>,
-            <span class="number">0xabc5750c4bf39b48u64</span>, <span class="number">0x52cfe2f7bb924883u64</span>, <span class="number">0x6b233d9d55535d4au64</span>
-        ]
-    ))));
-
-    <span class="ident">yden_k</span>[<span class="number">9usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x167a55cda70a6e1cu64</span>, <span class="number">0xea820597d94a8490u64</span>, <span class="number">0x3216f763e13d87bbu64</span>,
-            <span class="number">0x5308592e7ea7d4fbu64</span>, <span class="number">0xc7385ea3d529b35eu64</span>, <span class="number">0x346ef48bb8913f55u64</span>
-        ]
-    ))));
-
-    <span class="ident">yden_k</span>[<span class="number">10usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x04d2f259eea405bdu64</span>, <span class="number">0x48f010a01ad2911du64</span>, <span class="number">0x9c6dd039bb61a629u64</span>,
-            <span class="number">0x0e591b36e636a5c8u64</span>, <span class="number">0x71a5c29f4f830604u64</span>, <span class="number">0x00f8b49cba8f6aa8u64</span>
-        ]
-    ))));
-
-    <span class="ident">yden_k</span>[<span class="number">11usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x0accbb67481d033fu64</span>, <span class="number">0xf5852c1e48c50c47u64</span>, <span class="number">0x7f94ff8aefce42d2u64</span>,
-            <span class="number">0x8c0f9a88cea79135u64</span>, <span class="number">0x16f968986f7ebbeau64</span>, <span class="number">0x9684b529e2561092u64</span>
-        ]
-    ))));
-
-    <span class="ident">yden_k</span>[<span class="number">12usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x0ad6b9514c767fe3u64</span>, <span class="number">0xc3613144b45f1496u64</span>, <span class="number">0x543346d98adf0226u64</span>,
-            <span class="number">0x7d5ceef9a00d9b86u64</span>, <span class="number">0x93000763e3b90ac1u64</span>, <span class="number">0x1e99b138573345ccu64</span>
-        ]
-    ))));
-
-    <span class="ident">yden_k</span>[<span class="number">13usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x02660400eb2e4f3bu64</span>, <span class="number">0x628bdd0d53cd76f2u64</span>, <span class="number">0xbf565b94e72927c1u64</span>,
-            <span class="number">0xcb748df27942480eu64</span>, <span class="number">0x420517bd8714cc80u64</span>, <span class="number">0xd1fadc1326ed06f7u64</span>
-        ]
-    ))));
-
-    <span class="ident">yden_k</span>[<span class="number">14usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-        <span class="ident">U64</span>,
-        [
-            <span class="number">0x0e0fa1d816ddc03eu64</span>, <span class="number">0x6b24255e0d7819c1u64</span>, <span class="number">0x71c40f65e273b853u64</span>,
-            <span class="number">0x324efcd6356caa20u64</span>, <span class="number">0x5ca2f570f1349780u64</span>, <span class="number">0x4415473a1d634b8fu64</span>
-        ]
-    ))));
+    <span class="ident">yden_k</span>[<span class="number">0usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YDEN_K_0</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">yden_k</span>[<span class="number">1usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YDEN_K_1</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">yden_k</span>[<span class="number">2usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YDEN_K_2</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">yden_k</span>[<span class="number">3usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YDEN_K_3</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">yden_k</span>[<span class="number">4usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YDEN_K_4</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">yden_k</span>[<span class="number">5usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YDEN_K_5</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">yden_k</span>[<span class="number">6usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YDEN_K_6</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">yden_k</span>[<span class="number">7usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YDEN_K_7</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">yden_k</span>[<span class="number">8usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YDEN_K_8</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">yden_k</span>[<span class="number">9usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YDEN_K_9</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">yden_k</span>[<span class="number">10usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YDEN_K_10</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">yden_k</span>[<span class="number">11usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YDEN_K_11</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">yden_k</span>[<span class="number">12usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YDEN_K_12</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">yden_k</span>[<span class="number">13usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YDEN_K_13</span>.<span class="ident">to_be_bytes</span>());
+    <span class="ident">yden_k</span>[<span class="number">14usize</span>] <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G1_YDEN_K_14</span>.<span class="ident">to_be_bytes</span>());
 
     <span class="comment">// Computation</span>
 
-    <span class="comment">// x_num = k_(1,11) * x&#39;^11 + k_(1,10) * x&#39;^10 + k_(1,9) * x&#39;^9 + ... + k_(1,0)</span>
+    <span class="comment">// x_num = k_(1,11) * x^11 + k_(1,10) * x^10 + k_(1,9) * x^9 + ... + k_(1,0)</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">xnum</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">ZERO</span>();
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">xx</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">ONE</span>();
     <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">xnum_k</span>.<span class="ident">len</span>() {
@@ -2338,7 +2448,7 @@ for mapping to curve. */</span>
         <span class="ident">xx</span> <span class="op">=</span> <span class="ident">xx</span> <span class="op">*</span> <span class="ident">x</span>;
     }
 
-    <span class="comment">// x_den = x&#39;^10 + k_(2,9) * x&#39;^9 + k_(2,8) * x&#39;^8 + ... + k_(2,0)</span>
+    <span class="comment">// x_den = x^10 + k_(2,9) * x^9 + k_(2,8) * x^8 + ... + k_(2,0)</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">xden</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">ZERO</span>();
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">xx</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">ONE</span>();
     <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">xden_k</span>.<span class="ident">len</span>() {
@@ -2347,7 +2457,7 @@ for mapping to curve. */</span>
     }
     <span class="ident">xden</span> <span class="op">=</span> <span class="ident">xden</span> <span class="op">+</span> <span class="ident">xx</span>;
 
-    <span class="comment">// y_num = k_(3,15) * x&#39;^15 + k_(3,14) * x&#39;^14 + k_(3,13) * x&#39;^13 + ... + k_(3,0)</span>
+    <span class="comment">// y_num = k_(3,15) * x^15 + k_(3,14) * x^14 + k_(3,13) * x^13 + ... + k_(3,0)</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ynum</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">ZERO</span>();
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">xx</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">ONE</span>();
     <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">ynum_k</span>.<span class="ident">len</span>() {
@@ -2355,7 +2465,7 @@ for mapping to curve. */</span>
         <span class="ident">xx</span> <span class="op">=</span> <span class="ident">xx</span> <span class="op">*</span> <span class="ident">x</span>;
     }
 
-    <span class="comment">// y_den = x&#39;^15 + k_(4,14) * x&#39;^14 + k_(4,13) * x&#39;^13 + ... + k_(4,0)</span>
+    <span class="comment">// y_den = x^15 + k_(4,14) * x^14 + k_(4,13) * x^13 + ... + k_(4,0)</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">yden</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">ZERO</span>();
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">xx</span> <span class="op">=</span> <span class="ident">Fp</span>::<span class="ident">ONE</span>();
     <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">yden_k</span>.<span class="ident">len</span>() {
@@ -2364,10 +2474,10 @@ for mapping to curve. */</span>
     }
     <span class="ident">yden</span> <span class="op">=</span> <span class="ident">yden</span> <span class="op">+</span> <span class="ident">xx</span>;
 
-    <span class="comment">// x = x_num / x_den</span>
+    <span class="comment">// xr = x_num / x_den</span>
     <span class="kw">let</span> <span class="ident">xr</span> <span class="op">=</span> <span class="ident">xnum</span> <span class="op">*</span> <span class="ident">xden</span>.<span class="ident">inv</span>();
 
-    <span class="comment">// y = y&#39; * y_num / y_den</span>
+    <span class="comment">// yr = y * y_num / y_den</span>
     <span class="kw">let</span> <span class="ident">yr</span> <span class="op">=</span> <span class="ident">y</span> <span class="op">*</span> <span class="ident">ynum</span> <span class="op">*</span> <span class="ident">yden</span>.<span class="ident">inv</span>();
 
     <span class="comment">// if xden or yden is zero return point at infinity</span>
@@ -2403,6 +2513,132 @@ for mapping to curve. */</span>
     <span class="ident">p</span>
 }
 
+<span class="comment">/* Hash to G2 - Constants */</span>
+
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G2_XNUM_K_0</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x05c759507e8e333eu64</span>, <span class="number">0xbb5b7a9a47d7ed85u64</span>, <span class="number">0x32c52d39fd3a042au64</span>,
+        <span class="number">0x88b58423c50ae15du64</span>, <span class="number">0x5c2638e343d9c71cu64</span>, <span class="number">0x6238aaaaaaaa97d6u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G2_XNUM_K_1_I</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x11560bf17baa99bcu64</span>, <span class="number">0x32126fced787c88fu64</span>, <span class="number">0x984f87adf7ae0c7fu64</span>,
+        <span class="number">0x9a208c6b4f20a418u64</span>, <span class="number">0x1472aaa9cb8d5555u64</span>, <span class="number">0x26a9ffffffffc71au64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G2_XNUM_K_2_R</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x11560bf17baa99bcu64</span>, <span class="number">0x32126fced787c88fu64</span>, <span class="number">0x984f87adf7ae0c7fu64</span>,
+        <span class="number">0x9a208c6b4f20a418u64</span>, <span class="number">0x1472aaa9cb8d5555u64</span>, <span class="number">0x26a9ffffffffc71eu64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G2_XNUM_K_2_I</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x08ab05f8bdd54cdeu64</span>, <span class="number">0x190937e76bc3e447u64</span>, <span class="number">0xcc27c3d6fbd7063fu64</span>,
+        <span class="number">0xcd104635a790520cu64</span>, <span class="number">0x0a395554e5c6aaaau64</span>, <span class="number">0x9354ffffffffe38du64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G2_XNUM_K_3_R</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x171d6541fa38ccfau64</span>, <span class="number">0xed6dea691f5fb614u64</span>, <span class="number">0xcb14b4e7f4e810aau64</span>,
+        <span class="number">0x22d6108f142b8575u64</span>, <span class="number">0x7098e38d0f671c71u64</span>, <span class="number">0x88e2aaaaaaaa5ed1u64</span>
+    ]
+));
+
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G2_XDEN_K_0_I</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x1a0111ea397fe69au64</span>, <span class="number">0x4b1ba7b6434bacd7u64</span>, <span class="number">0x64774b84f38512bfu64</span>,
+        <span class="number">0x6730d2a0f6b0f624u64</span>, <span class="number">0x1eabfffeb153ffffu64</span>, <span class="number">0xb9feffffffffaa63u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G2_XDEN_K_1_I</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x1a0111ea397fe69au64</span>, <span class="number">0x4b1ba7b6434bacd7u64</span>, <span class="number">0x64774b84f38512bfu64</span>,
+        <span class="number">0x6730d2a0f6b0f624u64</span>, <span class="number">0x1eabfffeb153ffffu64</span>, <span class="number">0xb9feffffffffaa9fu64</span>
+    ]
+));
+
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G2_YNUM_K_0</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x1530477c7ab4113bu64</span>, <span class="number">0x59a4c18b076d1193u64</span>, <span class="number">0x0f7da5d4a07f649bu64</span>,
+        <span class="number">0xf54439d87d27e500u64</span>, <span class="number">0xfc8c25ebf8c92f68u64</span>, <span class="number">0x12cfc71c71c6d706u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G2_YNUM_K_1_I</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x05c759507e8e333eu64</span>, <span class="number">0xbb5b7a9a47d7ed85u64</span>, <span class="number">0x32c52d39fd3a042au64</span>,
+        <span class="number">0x88b58423c50ae15du64</span>, <span class="number">0x5c2638e343d9c71cu64</span>, <span class="number">0x6238aaaaaaaa97beu64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G2_YNUM_K_2_R</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x11560bf17baa99bcu64</span>, <span class="number">0x32126fced787c88fu64</span>, <span class="number">0x984f87adf7ae0c7fu64</span>,
+        <span class="number">0x9a208c6b4f20a418u64</span>, <span class="number">0x1472aaa9cb8d5555u64</span>, <span class="number">0x26a9ffffffffc71cu64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G2_YNUM_K_2_I</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x08ab05f8bdd54cdeu64</span>, <span class="number">0x190937e76bc3e447u64</span>, <span class="number">0xcc27c3d6fbd7063fu64</span>,
+        <span class="number">0xcd104635a790520cu64</span>, <span class="number">0x0a395554e5c6aaaau64</span>, <span class="number">0x9354ffffffffe38fu64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G2_YNUM_K_3_R</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x124c9ad43b6cf79bu64</span>, <span class="number">0xfbf7043de3811ad0u64</span>, <span class="number">0x761b0f37a1e26286u64</span>,
+        <span class="number">0xb0e977c69aa27452u64</span>, <span class="number">0x4e79097a56dc4bd9u64</span>, <span class="number">0xe1b371c71c718b10u64</span>
+    ]
+));
+
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G2_YDEN_K_0</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x1a0111ea397fe69au64</span>, <span class="number">0x4b1ba7b6434bacd7u64</span>, <span class="number">0x64774b84f38512bfu64</span>,
+        <span class="number">0x6730d2a0f6b0f624u64</span>, <span class="number">0x1eabfffeb153ffffu64</span>, <span class="number">0xb9feffffffffa8fbu64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G2_YDEN_K_1_I</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x1a0111ea397fe69au64</span>, <span class="number">0x4b1ba7b6434bacd7u64</span>, <span class="number">0x64774b84f38512bfu64</span>,
+        <span class="number">0x6730d2a0f6b0f624u64</span>, <span class="number">0x1eabfffeb153ffffu64</span>, <span class="number">0xb9feffffffffa9d3u64</span>
+    ]
+));
+<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="kw">const</span> <span class="ident">G2_YDEN_K_2_I</span>: <span class="ident">ArrFp</span> <span class="op">=</span> <span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
+    <span class="ident">U64</span>,
+    [
+        <span class="number">0x1a0111ea397fe69au64</span>, <span class="number">0x4b1ba7b6434bacd7u64</span>, <span class="number">0x64774b84f38512bfu64</span>,
+        <span class="number">0x6730d2a0f6b0f624u64</span>, <span class="number">0x1eabfffeb153ffffu64</span>, <span class="number">0xb9feffffffffaa99u64</span>
+    ]
+));
+
 <span class="comment">// https://www.ietf.org/archive/id/draft-irtf-cfrg-hash-to-curve-13.html#section-6.6.2</span>
 <span class="kw">fn</span> <span class="ident">g2_simple_swu_iso</span>(<span class="ident">u</span>: <span class="ident">Fp2</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">Fp2</span>, <span class="ident">Fp2</span>) {
     <span class="kw">let</span> <span class="ident">z</span> <span class="op">=</span> <span class="ident">fp2neg</span>((<span class="ident">Fp</span>::<span class="ident">TWO</span>(), <span class="ident">Fp</span>::<span class="ident">ONE</span>()));
@@ -2433,65 +2669,25 @@ for mapping to curve. */</span>
     (<span class="ident">x</span>, <span class="ident">y</span>)
 }
 
-<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>::<span class="ident">macros</span>(<span class="ident">secret_array</span>)]</span>
 <span class="comment">// https://www.ietf.org/archive/id/draft-irtf-cfrg-hash-to-curve-13.html#appendix-E.3</span>
 <span class="kw">fn</span> <span class="ident">g2_isogeny_map</span>(<span class="ident">x</span>: <span class="ident">Fp2</span>, <span class="ident">y</span>: <span class="ident">Fp2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">G2</span> {
     <span class="comment">// Constants</span>
     <span class="comment">// xnum_k</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">xnum_k</span> <span class="op">=</span> <span class="ident">Seq</span>::<span class="op">&lt;</span><span class="ident">Fp2</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="number">4</span>);
     <span class="ident">xnum_k</span>[<span class="number">0usize</span>] <span class="op">=</span> (
-        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-            <span class="ident">U64</span>,
-            [
-                <span class="number">0x05c759507e8e333eu64</span>, <span class="number">0xbb5b7a9a47d7ed85u64</span>, <span class="number">0x32c52d39fd3a042au64</span>,
-                <span class="number">0x88b58423c50ae15du64</span>, <span class="number">0x5c2638e343d9c71cu64</span>, <span class="number">0x6238aaaaaaaa97d6u64</span>
-            ]
-        )))),
-        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-            <span class="ident">U64</span>,
-            [
-                <span class="number">0x05c759507e8e333eu64</span>, <span class="number">0xbb5b7a9a47d7ed85u64</span>, <span class="number">0x32c52d39fd3a042au64</span>,
-                <span class="number">0x88b58423c50ae15du64</span>, <span class="number">0x5c2638e343d9c71cu64</span>, <span class="number">0x6238aaaaaaaa97d6u64</span>
-            ]
-        )))),
+        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G2_XNUM_K_0</span>.<span class="ident">to_be_bytes</span>()),
+        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G2_XNUM_K_0</span>.<span class="ident">to_be_bytes</span>()),
     );
-
     <span class="ident">xnum_k</span>[<span class="number">1usize</span>] <span class="op">=</span> (
         <span class="ident">Fp</span>::<span class="ident">ZERO</span>(),
-        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-            <span class="ident">U64</span>,
-            [
-                <span class="number">0x11560bf17baa99bcu64</span>, <span class="number">0x32126fced787c88fu64</span>, <span class="number">0x984f87adf7ae0c7fu64</span>,
-                <span class="number">0x9a208c6b4f20a418u64</span>, <span class="number">0x1472aaa9cb8d5555u64</span>, <span class="number">0x26a9ffffffffc71au64</span>
-            ]
-        )))),
+        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G2_XNUM_K_1_I</span>.<span class="ident">to_be_bytes</span>()),
     );
-
     <span class="ident">xnum_k</span>[<span class="number">2usize</span>] <span class="op">=</span> (
-        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-            <span class="ident">U64</span>,
-            [
-                <span class="number">0x11560bf17baa99bcu64</span>, <span class="number">0x32126fced787c88fu64</span>, <span class="number">0x984f87adf7ae0c7fu64</span>,
-                <span class="number">0x9a208c6b4f20a418u64</span>, <span class="number">0x1472aaa9cb8d5555u64</span>, <span class="number">0x26a9ffffffffc71eu64</span>
-            ]
-        )))),
-        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-            <span class="ident">U64</span>,
-            [
-                <span class="number">0x08ab05f8bdd54cdeu64</span>, <span class="number">0x190937e76bc3e447u64</span>, <span class="number">0xcc27c3d6fbd7063fu64</span>,
-                <span class="number">0xcd104635a790520cu64</span>, <span class="number">0x0a395554e5c6aaaau64</span>, <span class="number">0x9354ffffffffe38du64</span>
-            ]
-        )))),
+        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G2_XNUM_K_2_R</span>.<span class="ident">to_be_bytes</span>()),
+        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G2_XNUM_K_2_I</span>.<span class="ident">to_be_bytes</span>()),
     );
-
     <span class="ident">xnum_k</span>[<span class="number">3usize</span>] <span class="op">=</span> (
-        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-            <span class="ident">U64</span>,
-            [
-                <span class="number">0x171d6541fa38ccfau64</span>, <span class="number">0xed6dea691f5fb614u64</span>, <span class="number">0xcb14b4e7f4e810aau64</span>,
-                <span class="number">0x22d6108f142b8575u64</span>, <span class="number">0x7098e38d0f671c71u64</span>, <span class="number">0x88e2aaaaaaaa5ed1u64</span>
-            ]
-        )))),
+        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G2_XNUM_K_3_R</span>.<span class="ident">to_be_bytes</span>()),
         <span class="ident">Fp</span>::<span class="ident">ZERO</span>(),
     );
 
@@ -2499,128 +2695,50 @@ for mapping to curve. */</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">xden_k</span> <span class="op">=</span> <span class="ident">Seq</span>::<span class="op">&lt;</span><span class="ident">Fp2</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="number">2</span>);
     <span class="ident">xden_k</span>[<span class="number">0usize</span>] <span class="op">=</span> (
         <span class="ident">Fp</span>::<span class="ident">ZERO</span>(),
-        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-            <span class="ident">U64</span>,
-            [
-                <span class="number">0x1a0111ea397fe69au64</span>, <span class="number">0x4b1ba7b6434bacd7u64</span>, <span class="number">0x64774b84f38512bfu64</span>,
-                <span class="number">0x6730d2a0f6b0f624u64</span>, <span class="number">0x1eabfffeb153ffffu64</span>, <span class="number">0xb9feffffffffaa63u64</span>
-            ]
-        )))),
+        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G2_XDEN_K_0_I</span>.<span class="ident">to_be_bytes</span>()),
     );
-
     <span class="ident">xden_k</span>[<span class="number">1usize</span>] <span class="op">=</span> (
         <span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">12u128</span>),
-        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-            <span class="ident">U64</span>,
-            [
-                <span class="number">0x1a0111ea397fe69au64</span>, <span class="number">0x4b1ba7b6434bacd7u64</span>, <span class="number">0x64774b84f38512bfu64</span>,
-                <span class="number">0x6730d2a0f6b0f624u64</span>, <span class="number">0x1eabfffeb153ffffu64</span>, <span class="number">0xb9feffffffffaa9fu64</span>
-            ]
-        )))),
+        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G2_XDEN_K_1_I</span>.<span class="ident">to_be_bytes</span>()),
     );
 
     <span class="comment">// ynum_k</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ynum_k</span> <span class="op">=</span> <span class="ident">Seq</span>::<span class="op">&lt;</span><span class="ident">Fp2</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="number">4</span>);
     <span class="ident">ynum_k</span>[<span class="number">0usize</span>] <span class="op">=</span> (
-        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-            <span class="ident">U64</span>,
-            [
-                <span class="number">0x1530477c7ab4113bu64</span>, <span class="number">0x59a4c18b076d1193u64</span>, <span class="number">0x0f7da5d4a07f649bu64</span>,
-                <span class="number">0xf54439d87d27e500u64</span>, <span class="number">0xfc8c25ebf8c92f68u64</span>, <span class="number">0x12cfc71c71c6d706u64</span>
-            ]
-        )))),
-        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-            <span class="ident">U64</span>,
-            [
-                <span class="number">0x1530477c7ab4113bu64</span>, <span class="number">0x59a4c18b076d1193u64</span>, <span class="number">0x0f7da5d4a07f649bu64</span>,
-                <span class="number">0xf54439d87d27e500u64</span>, <span class="number">0xfc8c25ebf8c92f68u64</span>, <span class="number">0x12cfc71c71c6d706u64</span>
-            ]
-        )))),
+        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G2_YNUM_K_0</span>.<span class="ident">to_be_bytes</span>()),
+        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G2_YNUM_K_0</span>.<span class="ident">to_be_bytes</span>()),
     );
-
     <span class="ident">ynum_k</span>[<span class="number">1usize</span>] <span class="op">=</span> (
         <span class="ident">Fp</span>::<span class="ident">ZERO</span>(),
-        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-            <span class="ident">U64</span>,
-            [
-                <span class="number">0x05c759507e8e333eu64</span>, <span class="number">0xbb5b7a9a47d7ed85u64</span>, <span class="number">0x32c52d39fd3a042au64</span>,
-                <span class="number">0x88b58423c50ae15du64</span>, <span class="number">0x5c2638e343d9c71cu64</span>, <span class="number">0x6238aaaaaaaa97beu64</span>
-            ]
-        )))),
+        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G2_YNUM_K_1_I</span>.<span class="ident">to_be_bytes</span>()),
     );
-
     <span class="ident">ynum_k</span>[<span class="number">2usize</span>] <span class="op">=</span> (
-        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-            <span class="ident">U64</span>,
-            [
-                <span class="number">0x11560bf17baa99bcu64</span>, <span class="number">0x32126fced787c88fu64</span>, <span class="number">0x984f87adf7ae0c7fu64</span>,
-                <span class="number">0x9a208c6b4f20a418u64</span>, <span class="number">0x1472aaa9cb8d5555u64</span>, <span class="number">0x26a9ffffffffc71cu64</span>
-            ]
-        )))),
-        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-            <span class="ident">U64</span>,
-            [
-                <span class="number">0x08ab05f8bdd54cdeu64</span>, <span class="number">0x190937e76bc3e447u64</span>, <span class="number">0xcc27c3d6fbd7063fu64</span>,
-                <span class="number">0xcd104635a790520cu64</span>, <span class="number">0x0a395554e5c6aaaau64</span>, <span class="number">0x9354ffffffffe38fu64</span>
-            ]
-        )))),
+        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G2_YNUM_K_2_R</span>.<span class="ident">to_be_bytes</span>()),
+        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G2_YNUM_K_2_I</span>.<span class="ident">to_be_bytes</span>()),
     );
-
     <span class="ident">ynum_k</span>[<span class="number">3usize</span>] <span class="op">=</span> (
-        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-            <span class="ident">U64</span>,
-            [
-                <span class="number">0x124c9ad43b6cf79bu64</span>, <span class="number">0xfbf7043de3811ad0u64</span>, <span class="number">0x761b0f37a1e26286u64</span>,
-                <span class="number">0xb0e977c69aa27452u64</span>, <span class="number">0x4e79097a56dc4bd9u64</span>, <span class="number">0xe1b371c71c718b10u64</span>
-            ]
-        )))),
+        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G2_YNUM_K_3_R</span>.<span class="ident">to_be_bytes</span>()),
         <span class="ident">Fp</span>::<span class="ident">ZERO</span>(),
     );
 
     <span class="comment">// yden_k</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">yden_k</span> <span class="op">=</span> <span class="ident">Seq</span>::<span class="op">&lt;</span><span class="ident">Fp2</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="number">3</span>);
     <span class="ident">yden_k</span>[<span class="number">0usize</span>] <span class="op">=</span> (
-        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-            <span class="ident">U64</span>,
-            [
-                <span class="number">0x1a0111ea397fe69au64</span>, <span class="number">0x4b1ba7b6434bacd7u64</span>, <span class="number">0x64774b84f38512bfu64</span>,
-                <span class="number">0x6730d2a0f6b0f624u64</span>, <span class="number">0x1eabfffeb153ffffu64</span>, <span class="number">0xb9feffffffffa8fbu64</span>
-            ]
-        )))),
-        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-            <span class="ident">U64</span>,
-            [
-                <span class="number">0x1a0111ea397fe69au64</span>, <span class="number">0x4b1ba7b6434bacd7u64</span>, <span class="number">0x64774b84f38512bfu64</span>,
-                <span class="number">0x6730d2a0f6b0f624u64</span>, <span class="number">0x1eabfffeb153ffffu64</span>, <span class="number">0xb9feffffffffa8fbu64</span>
-            ]
-        )))),
+        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G2_YDEN_K_0</span>.<span class="ident">to_be_bytes</span>()),
+        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G2_YDEN_K_0</span>.<span class="ident">to_be_bytes</span>()),
     );
-
     <span class="ident">yden_k</span>[<span class="number">1usize</span>] <span class="op">=</span> (
         <span class="ident">Fp</span>::<span class="ident">ZERO</span>(),
-        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-            <span class="ident">U64</span>,
-            [
-                <span class="number">0x1a0111ea397fe69au64</span>, <span class="number">0x4b1ba7b6434bacd7u64</span>, <span class="number">0x64774b84f38512bfu64</span>,
-                <span class="number">0x6730d2a0f6b0f624u64</span>, <span class="number">0x1eabfffeb153ffffu64</span>, <span class="number">0xb9feffffffffa9d3u64</span>
-            ]
-        )))),
+        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G2_YDEN_K_1_I</span>.<span class="ident">to_be_bytes</span>()),
     );
-
     <span class="ident">yden_k</span>[<span class="number">2usize</span>] <span class="op">=</span> (
         <span class="ident">Fp</span>::<span class="ident">from_literal</span>(<span class="number">18u128</span>),
-        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>::<span class="ident">to_be_bytes</span>(<span class="kw-2">&amp;</span><span class="ident">ArrFp</span>(<span class="macro">secret_array</span><span class="macro">!</span>(
-            <span class="ident">U64</span>,
-            [
-                <span class="number">0x1a0111ea397fe69au64</span>, <span class="number">0x4b1ba7b6434bacd7u64</span>, <span class="number">0x64774b84f38512bfu64</span>,
-                <span class="number">0x6730d2a0f6b0f624u64</span>, <span class="number">0x1eabfffeb153ffffu64</span>, <span class="number">0xb9feffffffffaa99u64</span>
-            ]
-        )))),
+        <span class="ident">Fp</span>::<span class="ident">from_byte_seq_be</span>(<span class="kw-2">&amp;</span><span class="ident">G2_YDEN_K_2_I</span>.<span class="ident">to_be_bytes</span>()),
     );
 
     <span class="comment">// Computation</span>
 
-    <span class="comment">// x_num = k_(1,3) * x&#39;^3 + k_(1,2) * x&#39;^2 + k_(1,1) * x&#39; + k_(1,0)</span>
+    <span class="comment">// x_num = k_(1,3) * x^3 + k_(1,2) * x^2 + k_(1,1) * x + k_(1,0)</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">xnum</span> <span class="op">=</span> <span class="ident">fp2zero</span>();
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">xx</span> <span class="op">=</span> <span class="ident">fp2fromfp</span>(<span class="ident">Fp</span>::<span class="ident">ONE</span>());
     <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">xnum_k</span>.<span class="ident">len</span>() {
@@ -2628,7 +2746,7 @@ for mapping to curve. */</span>
         <span class="ident">xx</span> <span class="op">=</span> <span class="ident">fp2mul</span>(<span class="ident">xx</span>, <span class="ident">x</span>);
     }
 
-    <span class="comment">// x_den = x&#39;^2 + k_(2,1) * x&#39; + k_(2,0)</span>
+    <span class="comment">// x_den = x^2 + k_(2,1) * x + k_(2,0)</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">xden</span> <span class="op">=</span> <span class="ident">fp2zero</span>();
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">xx</span> <span class="op">=</span> <span class="ident">fp2fromfp</span>(<span class="ident">Fp</span>::<span class="ident">ONE</span>());
     <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">xden_k</span>.<span class="ident">len</span>() {
@@ -2637,7 +2755,7 @@ for mapping to curve. */</span>
     }
     <span class="ident">xden</span> <span class="op">=</span> <span class="ident">fp2add</span>(<span class="ident">xden</span>, <span class="ident">xx</span>);
 
-    <span class="comment">// y_num = k_(3,3) * x&#39;^3 + k_(3,2) * x&#39;^2 + k_(3,1) * x&#39; + k_(3,0)</span>
+    <span class="comment">// y_num = k_(3,3) * x^3 + k_(3,2) * x^2 + k_(3,1) * x + k_(3,0)</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ynum</span> <span class="op">=</span> <span class="ident">fp2zero</span>();
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">xx</span> <span class="op">=</span> <span class="ident">fp2fromfp</span>(<span class="ident">Fp</span>::<span class="ident">ONE</span>());
     <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">ynum_k</span>.<span class="ident">len</span>() {
@@ -2645,7 +2763,7 @@ for mapping to curve. */</span>
         <span class="ident">xx</span> <span class="op">=</span> <span class="ident">fp2mul</span>(<span class="ident">xx</span>, <span class="ident">x</span>);
     }
 
-    <span class="comment">// y_den = x&#39;^3 + k_(4,2) * x&#39;^2 + k_(4,1) * x&#39; + k_(4,0)</span>
+    <span class="comment">// y_den = x^3 + k_(4,2) * x^2 + k_(4,1) * x + k_(4,0)</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">yden</span> <span class="op">=</span> <span class="ident">fp2zero</span>();
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">xx</span> <span class="op">=</span> <span class="ident">fp2fromfp</span>(<span class="ident">Fp</span>::<span class="ident">ONE</span>());
     <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">yden_k</span>.<span class="ident">len</span>() {
@@ -2654,10 +2772,10 @@ for mapping to curve. */</span>
     }
     <span class="ident">yden</span> <span class="op">=</span> <span class="ident">fp2add</span>(<span class="ident">yden</span>, <span class="ident">xx</span>);
 
-    <span class="comment">// x = x_num / x_den</span>
+    <span class="comment">// xr = x_num / x_den</span>
     <span class="kw">let</span> <span class="ident">xr</span> <span class="op">=</span> <span class="ident">fp2mul</span>(<span class="ident">xnum</span>, <span class="ident">fp2inv</span>(<span class="ident">xden</span>));
 
-    <span class="comment">// y = y&#39; * y_num / y_den</span>
+    <span class="comment">// yr = y * y_num / y_den</span>
     <span class="kw">let</span> <span class="ident">yr</span> <span class="op">=</span> <span class="ident">fp2mul</span>(<span class="ident">y</span>, <span class="ident">fp2mul</span>(<span class="ident">ynum</span>, <span class="ident">fp2inv</span>(<span class="ident">yden</span>)));
 
     <span class="comment">// if xden or yden is zero return point at infinity</span>
